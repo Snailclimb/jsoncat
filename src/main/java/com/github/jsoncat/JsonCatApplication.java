@@ -1,5 +1,7 @@
-import common.Banner;
-import server.HttpServer;
+package com.github.jsoncat;
+
+import com.github.jsoncat.common.Banner;
+import com.github.jsoncat.server.HttpServer;
 
 /**
  * @author shuang.kou

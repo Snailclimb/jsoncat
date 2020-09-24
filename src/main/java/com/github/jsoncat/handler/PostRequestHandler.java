@@ -1,4 +1,4 @@
-package handler;
+package com.github.jsoncat.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

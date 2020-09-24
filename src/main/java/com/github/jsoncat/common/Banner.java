@@ -1,4 +1,4 @@
-package common;
+package com.github.jsoncat.common;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

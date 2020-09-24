@@ -1,4 +1,4 @@
-package serialize.impl;
+package com.github.jsoncat.serialize.impl;
 
 
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,6 @@ class JacksonSerializerTest {
         assertNotEquals(bytes.length, 0);
         SerializeObject deserializeObject = jacksonSerializer.deserialize(bytes, SerializeObject.class);
         assertEquals(serializeObject, deserializeObject);
-
     }
 
 }

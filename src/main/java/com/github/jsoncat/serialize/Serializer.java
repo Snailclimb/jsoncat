@@ -1,4 +1,4 @@
-package serialize;
+package com.github.jsoncat.serialize;
 
 /**
  * @author shuang.kou

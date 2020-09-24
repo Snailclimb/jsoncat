@@ -1,10 +1,10 @@
-package server;
+package com.github.jsoncat.server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import factory.RequestHandlerFactory;
-import handler.GetRequestHandler;
-import handler.PostRequestHandler;
-import handler.RequestHandler;
+import com.github.jsoncat.factory.RequestHandlerFactory;
+import com.github.jsoncat.handler.GetRequestHandler;
+import com.github.jsoncat.handler.PostRequestHandler;
+import com.github.jsoncat.handler.RequestHandler;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -12,14 +12,10 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.util.AsciiString;
 import lombok.extern.slf4j.Slf4j;
-import serialize.impl.JacksonSerializer;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.github.jsoncat.serialize.impl.JacksonSerializer;
 
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;

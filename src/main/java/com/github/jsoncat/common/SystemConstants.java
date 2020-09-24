@@ -1,4 +1,4 @@
-package common;
+package com.github.jsoncat.common;
 
 /**
  * @author shuang.kou

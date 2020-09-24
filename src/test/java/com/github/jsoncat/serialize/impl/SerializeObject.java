@@ -1,4 +1,4 @@
-package serialize.impl;
+package com.github.jsoncat.serialize.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

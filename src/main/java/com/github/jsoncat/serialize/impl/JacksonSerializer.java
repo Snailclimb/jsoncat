@@ -1,8 +1,8 @@
-package serialize.impl;
+package com.github.jsoncat.serialize.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import serialize.Serializer;
+import com.github.jsoncat.serialize.Serializer;
 
 import java.io.IOException;
 

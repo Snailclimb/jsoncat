@@ -1,8 +1,8 @@
-package factory;
+package com.github.jsoncat.factory;
 
-import handler.GetRequestHandler;
-import handler.PostRequestHandler;
-import handler.RequestHandler;
+import com.github.jsoncat.handler.GetRequestHandler;
+import com.github.jsoncat.handler.PostRequestHandler;
+import com.github.jsoncat.handler.RequestHandler;
 import io.netty.handler.codec.http.HttpMethod;
 
 import java.util.HashMap;

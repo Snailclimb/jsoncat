@@ -1,6 +1,6 @@
-package server;
+package com.github.jsoncat.server;
 
-import common.SystemConstants;
+import com.github.jsoncat.common.SystemConstants;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -45,14 +45,14 @@ public class HttpServer {
                             ch.pipeline().addLast("decoder", new HttpRequestDecoder())
                                     .addLast("encoder", new HttpResponseEncoder())
                                     .addLast("aggregator", new HttpObjectAggregator(512 * 1024))
-                                    .addLast("handler", new HttpServerHandler());
+                                    .addLast("com/github/jsoncat/handler", new HttpServerHandler());
                         }
                     });
             Channel ch = b.bind(PORT).sync().channel();
             log.info(SystemConstants.LOG_PORT_BANNER ,PORT);
             ch.closeFuture().sync();
         } catch (InterruptedException e) {
-            log.error("occur exception when start server:", e);
+            log.error("occur com.github.jsoncat.exception when start com.github.jsoncat.server:", e);
         } finally {
             log.error("shutdown bossGroup and workerGroup");
             bossGroup.shutdownGracefully();
