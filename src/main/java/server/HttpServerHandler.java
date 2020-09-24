@@ -1,6 +1,7 @@
 package server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import factory.RequestHandlerFactory;
 import handler.GetRequestHandler;
 import handler.PostRequestHandler;
 import handler.RequestHandler;
@@ -34,13 +35,6 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpReque
     private static final AsciiString CONTENT_LENGTH = AsciiString.cached("Content-Length");
     private static final AsciiString CONNECTION = AsciiString.cached("Connection");
     private static final AsciiString KEEP_ALIVE = AsciiString.cached("keep-alive");
-    private final Map<HttpMethod, RequestHandler> requestHandlers;
-
-    public HttpServerHandler() {
-        this.requestHandlers = new HashMap<>();
-        requestHandlers.put(HttpMethod.GET, new GetRequestHandler());
-        requestHandlers.put(HttpMethod.POST, new PostRequestHandler());
-    }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest fullHttpRequest) throws JsonProcessingException {
@@ -49,7 +43,7 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpReque
         if (uri.equals(FAVICON_ICO)) {
             return;
         }
-        RequestHandler requestHandler = requestHandlers.get(fullHttpRequest.method());
+        RequestHandler requestHandler = RequestHandlerFactory.create(fullHttpRequest.method());
         Object result = requestHandler.handle(fullHttpRequest);
         FullHttpResponse response = buildHttpResponse(result);
         boolean keepAlive = HttpUtil.isKeepAlive(fullHttpRequest);
