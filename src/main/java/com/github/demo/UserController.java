@@ -13,7 +13,7 @@ public class UserController {
 
 
     @GetMapping
-    public User get(@RequestParam("name") String name) {
-        return new User(name, "哈撒尅！！！");
+    public User get(@RequestParam("name") String name, @RequestParam("des") String des, @RequestParam("age") Integer age) {
+        return new User(name, des, age);
     }
 }
