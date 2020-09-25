@@ -1,7 +1,8 @@
 package com.github.demo;
 
-import annotation.GetMapping;
-import annotation.RestController;
+import com.github.jsoncat.annotation.GetMapping;
+import com.github.jsoncat.annotation.RequestParam;
+import com.github.jsoncat.annotation.RestController;
 
 /**
  * @author shuang.kou
@@ -12,7 +13,7 @@ public class UserController {
 
 
     @GetMapping
-    public User get() {
-        return new User("压缩", "哈撒尅！！！");
+    public User get(@RequestParam("name") String name) {
+        return new User(name, "哈撒尅！！！");
     }
 }

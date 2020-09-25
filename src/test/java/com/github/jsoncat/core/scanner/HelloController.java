@@ -1,6 +1,6 @@
-package com.github.jsoncat.scanners;
+package com.github.jsoncat.core.scanner;
 
-import annotation.RestController;
+import com.github.jsoncat.annotation.RestController;
 
 /**
  * @author shuang.kou

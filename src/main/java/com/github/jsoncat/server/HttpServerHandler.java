@@ -2,9 +2,9 @@ package com.github.jsoncat.server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.jsoncat.factory.RequestHandlerFactory;
-import com.github.jsoncat.handler.GetRequestHandler;
-import com.github.jsoncat.handler.PostRequestHandler;
-import com.github.jsoncat.handler.RequestHandler;
+import com.github.jsoncat.core.handler.GetRequestHandler;
+import com.github.jsoncat.core.handler.PostRequestHandler;
+import com.github.jsoncat.core.handler.RequestHandler;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;

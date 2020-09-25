@@ -1,4 +1,4 @@
-package com.github.jsoncat.handler;
+package com.github.jsoncat.core.handler;
 
 import io.netty.handler.codec.http.FullHttpRequest;
 
