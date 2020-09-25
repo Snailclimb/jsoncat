@@ -12,6 +12,7 @@ import java.nio.file.Paths;
  * @createTime 2020年09月22日 18:07:00
  **/
 public class Banner {
+    // banner made by https://www.bootschool.net/ascii
     public static final String DEFAULT_BANNER_NAME = "banner.txt";
 
     public static void printBanner() {
