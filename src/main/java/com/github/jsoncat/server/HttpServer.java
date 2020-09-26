@@ -1,6 +1,6 @@
 package com.github.jsoncat.server;
 
-import com.github.jsoncat.common.SystemConstants;
+import com.github.jsoncat.common.constant.SystemConstants;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;

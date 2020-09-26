@@ -1,4 +1,4 @@
-package com.github.jsoncat.common.utils;
+package com.github.jsoncat.common.util;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
  * @createTime 2020年09月25日 14:23:00
  **/
 @Slf4j
-public class ReflectionUtils {
+public class ReflectionUtil {
     /**
      * @param method target method
      * @param args   method parameters
@@ -30,7 +30,4 @@ public class ReflectionUtils {
         return result;
     }
 
-    public static Object cast(String s, Class<?> aClass) {
-        return aClass.cast(s);
-    }
 }

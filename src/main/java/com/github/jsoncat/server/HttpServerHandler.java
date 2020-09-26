@@ -1,24 +1,16 @@
 package com.github.jsoncat.server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.github.jsoncat.factory.RequestHandlerFactory;
-import com.github.jsoncat.core.handler.GetRequestHandler;
-import com.github.jsoncat.core.handler.PostRequestHandler;
 import com.github.jsoncat.core.handler.RequestHandler;
-import io.netty.buffer.Unpooled;
+import com.github.jsoncat.factory.RequestHandlerFactory;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.util.AsciiString;
 import lombok.extern.slf4j.Slf4j;
-import com.github.jsoncat.serialize.impl.JacksonSerializer;
-
-import static io.netty.handler.codec.http.HttpResponseStatus.OK;
-import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 /**
  * @author shuang.kou
@@ -27,8 +19,6 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 @Slf4j
 public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     private static final String FAVICON_ICO = "/favicon.ico";
-    private static final AsciiString CONTENT_TYPE = AsciiString.cached("Content-Type");
-    private static final AsciiString CONTENT_LENGTH = AsciiString.cached("Content-Length");
     private static final AsciiString CONNECTION = AsciiString.cached("Connection");
     private static final AsciiString KEEP_ALIVE = AsciiString.cached("keep-alive");
 
@@ -40,8 +30,15 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpReque
             return;
         }
         RequestHandler requestHandler = RequestHandlerFactory.create(fullHttpRequest.method());
-        Object result = requestHandler.handle(fullHttpRequest);
-        FullHttpResponse response = buildHttpResponse(result);
+        Object result;
+        FullHttpResponse response;
+        try {
+            result = requestHandler.handle(fullHttpRequest);
+            response = HttpResponse.ok(result);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            response = HttpResponse.internalServerError();
+        }
         boolean keepAlive = HttpUtil.isKeepAlive(fullHttpRequest);
         if (!keepAlive) {
             ctx.write(response).addListener(ChannelFutureListener.CLOSE);
@@ -63,12 +60,5 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpReque
         ctx.flush();
     }
 
-    private FullHttpResponse buildHttpResponse(Object o) {
-        JacksonSerializer jsonSerializer = new JacksonSerializer();
-        byte[] content = jsonSerializer.serialize(o);
-        FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.wrappedBuffer(content));
-        response.headers().set(CONTENT_TYPE, "application/json");
-        response.headers().setInt(CONTENT_LENGTH, response.content().readableBytes());
-        return response;
-    }
+
 }

@@ -1,4 +1,4 @@
-package com.github.jsoncat.common.utils;
+package com.github.jsoncat.common.util;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.Map;
  * @author shuang.kou
  * @createTime 2020年09月25日 16:00:00
  **/
-public class UrlUtils {
+public class UrlUtil {
 
     /**
      * get the parameters of url

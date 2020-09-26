@@ -1,9 +1,9 @@
 package com.github.jsoncat.core.handler;
 
 import com.github.jsoncat.annotation.RequestParam;
-import com.github.jsoncat.common.utils.ObjectUtils;
-import com.github.jsoncat.common.utils.ReflectionUtils;
-import com.github.jsoncat.common.utils.UrlUtils;
+import com.github.jsoncat.common.util.ObjectUtil;
+import com.github.jsoncat.common.util.ReflectionUtil;
+import com.github.jsoncat.common.util.UrlUtil;
 import com.github.jsoncat.core.Router;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.QueryStringDecoder;
@@ -28,7 +28,7 @@ public class GetRequestHandler implements RequestHandler {
     @Override
     public Object handle(FullHttpRequest fullHttpRequest) {
         QueryStringDecoder queryDecoder = new QueryStringDecoder(fullHttpRequest.uri(), Charsets.toCharset(CharEncoding.UTF_8));
-        Map<String, String> queryParams = UrlUtils.getQueryParams(queryDecoder.parameters());
+        Map<String, String> queryParams = UrlUtil.getQueryParams(queryDecoder.parameters());
         // get http request path，such as "/user"
         String url = queryDecoder.path();
         // get target method
@@ -50,13 +50,12 @@ public class GetRequestHandler implements RequestHandler {
                     throw new IllegalArgumentException("The specified parameter" + requestParameter + "can not be null!");
                 }
                 // convert the parameter to the specified type
-                Object param = ObjectUtils.convert(parameter.getType(), requestParameterValue);
+                Object param = ObjectUtil.convert(parameter.getType(), requestParameterValue);
                 targetMethodParams.add(param);
             }
         }
-        return ReflectionUtils.executeMethod(targetMethod, targetMethodParams.toArray());
+        return ReflectionUtil.executeMethod(targetMethod, targetMethodParams.toArray());
     }
-
 
 
 }
