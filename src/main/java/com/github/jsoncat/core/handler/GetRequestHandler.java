@@ -3,7 +3,7 @@ package com.github.jsoncat.core.handler;
 import com.github.jsoncat.annotation.RequestParam;
 import com.github.jsoncat.common.util.ObjectUtil;
 import com.github.jsoncat.common.util.ReflectionUtil;
-import com.github.jsoncat.common.util.UrlUtil;
+import com.github.jsoncat.common.util.HttpRequestUtil;
 import com.github.jsoncat.core.Router;
 import io.netty.handler.codec.http.FullHttpRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +25,9 @@ public class GetRequestHandler implements RequestHandler {
     @Override
     public Object handle(FullHttpRequest fullHttpRequest) {
         String requestUri = fullHttpRequest.uri();
-        Map<String, String> queryParams = UrlUtil.getQueryParams(requestUri);
+        Map<String, String> queryParams = HttpRequestUtil.getQueryParams(requestUri);
         // get http request path，such as "/user"
-        String requestPath = UrlUtil.getRequestPath(requestUri);
+        String requestPath = HttpRequestUtil.getRequestPath(requestUri);
         // get target method
         Method targetMethod = Router.getMappings.get(requestPath);
         if (targetMethod == null) {

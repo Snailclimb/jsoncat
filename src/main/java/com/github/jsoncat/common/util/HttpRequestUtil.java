@@ -1,5 +1,6 @@
 package com.github.jsoncat.common.util;
 
+import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.QueryStringDecoder;
 import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.codec.Charsets;
@@ -12,7 +13,7 @@ import java.util.Map;
  * @author shuang.kou
  * @createTime 2020年09月25日 16:00:00
  **/
-public class UrlUtil {
+public class HttpRequestUtil {
 
 
     /**
@@ -36,5 +37,11 @@ public class UrlUtil {
     public static String getRequestPath(String uri) {
         QueryStringDecoder queryDecoder = new QueryStringDecoder(uri, Charsets.toCharset(CharEncoding.UTF_8));
         return queryDecoder.path();
+    }
+
+    public static String getContentType(HttpHeaders headers) {
+        String typeStr = headers.get("Content-Type");
+        String[] list = typeStr.split(";");
+        return list[0];
     }
 }
