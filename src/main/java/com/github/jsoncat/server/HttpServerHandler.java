@@ -1,6 +1,7 @@
 package com.github.jsoncat.server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.jsoncat.common.util.UrlUtil;
 import com.github.jsoncat.core.handler.RequestHandler;
 import com.github.jsoncat.factory.RequestHandlerFactory;
 import io.netty.channel.ChannelFutureListener;
@@ -37,7 +38,8 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpReque
             response = HttpResponse.ok(result);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            response = HttpResponse.internalServerError(fullHttpRequest.uri());
+            String requestPath = UrlUtil.getRequestPath(fullHttpRequest.uri());
+            response = HttpResponse.internalServerError(requestPath, e.toString());
         }
         boolean keepAlive = HttpUtil.isKeepAlive(fullHttpRequest);
         if (!keepAlive) {

@@ -28,8 +28,8 @@ public class HttpResponse {
         return response;
     }
 
-    public static FullHttpResponse internalServerError(String path) {
-        ErrorResponse errorResponse = new ErrorResponse(INTERNAL_SERVER_ERROR.code(), INTERNAL_SERVER_ERROR.reasonPhrase(), path);
+    public static FullHttpResponse internalServerError(String url, String message) {
+        ErrorResponse errorResponse = new ErrorResponse(INTERNAL_SERVER_ERROR.code(), INTERNAL_SERVER_ERROR.reasonPhrase(), message, url);
         byte[] content = jsonSerializer.serialize(errorResponse);
         FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, INTERNAL_SERVER_ERROR, Unpooled.wrappedBuffer(content));
         response.headers().set(CONTENT_TYPE, "application/json");

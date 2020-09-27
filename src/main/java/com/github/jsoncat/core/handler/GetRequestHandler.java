@@ -6,10 +6,7 @@ import com.github.jsoncat.common.util.ReflectionUtil;
 import com.github.jsoncat.common.util.UrlUtil;
 import com.github.jsoncat.core.Router;
 import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.QueryStringDecoder;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.CharEncoding;
-import org.apache.commons.codec.Charsets;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -27,16 +24,16 @@ import java.util.Map;
 public class GetRequestHandler implements RequestHandler {
     @Override
     public Object handle(FullHttpRequest fullHttpRequest) {
-        QueryStringDecoder queryDecoder = new QueryStringDecoder(fullHttpRequest.uri(), Charsets.toCharset(CharEncoding.UTF_8));
-        Map<String, String> queryParams = UrlUtil.getQueryParams(queryDecoder.parameters());
+        String requestUri = fullHttpRequest.uri();
+        Map<String, String> queryParams = UrlUtil.getQueryParams(requestUri);
         // get http request path，such as "/user"
-        String url = queryDecoder.path();
+        String requestPath = UrlUtil.getRequestPath(requestUri);
         // get target method
-        Method targetMethod = Router.getMappings.get(url);
+        Method targetMethod = Router.getMappings.get(requestPath);
         if (targetMethod == null) {
             return null;
         }
-        log.info("url -> target method [{}]", targetMethod.getName());
+        log.info("requestPath -> target method [{}]", targetMethod.getName());
         Parameter[] targetMethodParameters = targetMethod.getParameters();
         // target method parameters.
         // notice! you should convert it to array when pass into the executeMethod method
@@ -47,7 +44,7 @@ public class GetRequestHandler implements RequestHandler {
                 String requestParameter = requestParam.value();
                 String requestParameterValue = queryParams.get(requestParameter);
                 if (requestParameterValue == null) {
-                    throw new IllegalArgumentException("The specified parameter" + requestParameter + "can not be null!");
+                    throw new IllegalArgumentException("The specified parameter " + requestParameter + " can not be null!");
                 }
                 // convert the parameter to the specified type
                 Object param = ObjectUtil.convert(parameter.getType(), requestParameterValue);
