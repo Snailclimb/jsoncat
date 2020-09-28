@@ -1,6 +1,5 @@
 package com.github.jsoncat.common.util;
 
-import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.QueryStringDecoder;
 import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.codec.Charsets;
@@ -13,7 +12,7 @@ import java.util.Map;
  * @author shuang.kou
  * @createTime 2020年09月25日 16:00:00
  **/
-public class HttpRequestUtil {
+public class UrlUtil {
 
 
     /**
@@ -39,9 +38,31 @@ public class HttpRequestUtil {
         return queryDecoder.path();
     }
 
-    public static String getContentType(HttpHeaders headers) {
-        String typeStr = headers.get("Content-Type");
-        String[] list = typeStr.split(";");
-        return list[0];
+
+    /**
+     * format the url
+     * for example : "/user/{name}" -> "^/user/[\u4e00-\u9fa5_a-zA-Z0-9]+/?$"
+     */
+    public static String formatUrl(String url) {
+        // replace {xxx} placeholders with regular expressions matching Chinese, English letters and numbers, and underscores
+        String originPattern = url.replaceAll("(\\{\\w+})", "[\\\\u4e00-\\\\u9fa5_a-zA-Z0-9]+");
+        String pattern = "^" + originPattern + "/?$";
+        return pattern.replaceAll("/+", "/");
     }
+
+    /**
+     * for example :
+     * if requestPath="/user/{name}"  url="/user/盖伦"
+     * this method will return:
+     */
+    public static Map<String, String> getUrlParameterMappings(String requestPath, String url) {
+        String[] requestParams = requestPath.split("/");
+        String[] urlParams = url.split("/");
+        Map<String, String> urlParameterMappings = new HashMap<>();
+        for (int i = 1; i < urlParams.length; i++) {
+            urlParameterMappings.put(urlParams[i].replace("{", "").replace("}", ""), requestParams[i]);
+        }
+        return urlParameterMappings;
+    }
+
 }

@@ -49,7 +49,7 @@ public class HttpServer {
                         }
                     });
             Channel ch = b.bind(PORT).sync().channel();
-            log.info(SystemConstants.LOG_PORT_BANNER ,PORT);
+            log.info(SystemConstants.LOG_PORT_BANNER, PORT);
             ch.closeFuture().sync();
         } catch (InterruptedException e) {
             log.error("occur com.github.jsoncat.exception when start com.github.jsoncat.server:", e);

@@ -1,11 +1,13 @@
 package com.github.jsoncat.core.handler;
 
-import com.github.jsoncat.annotation.RequestParam;
-import com.github.jsoncat.common.util.ObjectUtil;
 import com.github.jsoncat.common.util.ReflectionUtil;
-import com.github.jsoncat.common.util.HttpRequestUtil;
-import com.github.jsoncat.core.Router;
+import com.github.jsoncat.common.util.UrlUtil;
+import com.github.jsoncat.core.ApplicationContext;
+import com.github.jsoncat.core.entity.MethodDetail;
+import com.github.jsoncat.core.resolver.ParameterResolver;
+import com.github.jsoncat.core.resolver.ParameterResolverFactory;
 import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpMethod;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Method;
@@ -25,11 +27,17 @@ public class GetRequestHandler implements RequestHandler {
     @Override
     public Object handle(FullHttpRequest fullHttpRequest) {
         String requestUri = fullHttpRequest.uri();
-        Map<String, String> queryParams = HttpRequestUtil.getQueryParams(requestUri);
+        Map<String, String> queryParameterMappings = UrlUtil.getQueryParams(requestUri);
         // get http request path，such as "/user"
-        String requestPath = HttpRequestUtil.getRequestPath(requestUri);
+        String requestPath = UrlUtil.getRequestPath(requestUri);
         // get target method
-        Method targetMethod = Router.getMappings.get(requestPath);
+        ApplicationContext applicationContext = ApplicationContext.getInstance();
+        MethodDetail methodDetail = applicationContext.getMethodDetail(requestPath, HttpMethod.GET);
+        if (methodDetail == null) {
+            return null;
+        }
+        methodDetail.setQueryParameterMappings(queryParameterMappings);
+        Method targetMethod = methodDetail.getMethod();
         if (targetMethod == null) {
             return null;
         }
@@ -39,20 +47,13 @@ public class GetRequestHandler implements RequestHandler {
         // notice! you should convert it to array when pass into the executeMethod method
         List<Object> targetMethodParams = new ArrayList<>();
         for (Parameter parameter : targetMethodParameters) {
-            RequestParam requestParam = parameter.getDeclaredAnnotation(RequestParam.class);
-            if (requestParam != null) {
-                String requestParameter = requestParam.value();
-                String requestParameterValue = queryParams.get(requestParameter);
-                if (requestParameterValue == null) {
-                    throw new IllegalArgumentException("The specified parameter " + requestParameter + " can not be null!");
-                }
-                // convert the parameter to the specified type
-                Object param = ObjectUtil.convert(parameter.getType(), requestParameterValue);
+            ParameterResolver parameterResolver = ParameterResolverFactory.get(parameter);
+            if (parameterResolver != null) {
+                Object param = parameterResolver.resolve(methodDetail, parameter);
                 targetMethodParams.add(param);
             }
         }
         return ReflectionUtil.executeMethod(targetMethod, targetMethodParams.toArray());
     }
-
 
 }
