@@ -1,4 +1,4 @@
-package com.github.jsoncat.factory;
+package com.github.jsoncat.core.handler;
 
 import com.github.jsoncat.core.handler.GetRequestHandler;
 import com.github.jsoncat.core.handler.PostRequestHandler;

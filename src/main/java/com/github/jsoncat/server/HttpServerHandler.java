@@ -3,7 +3,7 @@ package com.github.jsoncat.server;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.jsoncat.common.util.UrlUtil;
 import com.github.jsoncat.core.handler.RequestHandler;
-import com.github.jsoncat.factory.RequestHandlerFactory;
+import com.github.jsoncat.core.handler.RequestHandlerFactory;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
