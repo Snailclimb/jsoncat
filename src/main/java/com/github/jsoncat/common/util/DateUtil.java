@@ -11,12 +11,12 @@ import java.util.Locale;
  * @createTime 2020年09月26日 10:42:00
  **/
 public class DateUtil {
-    private static final DateTimeFormatter formatter =
+    private static final DateTimeFormatter FORMATTER =
             DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
                     .withLocale(Locale.CHINA)
                     .withZone(ZoneId.systemDefault());
 
     public static String now() {
-        return formatter.format(Instant.now());
+        return FORMATTER.format(Instant.now());
     }
 }

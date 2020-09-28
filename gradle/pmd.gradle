@@ -1,0 +1,14 @@
+apply plugin: 'pmd'
+
+pmd {
+    ignoreFailures = true
+    ruleSetConfig = resources.text.fromFile("config/pmd/pmd.xml")
+    pmdTest.enabled = false
+}
+
+tasks.withType(Pmd) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}

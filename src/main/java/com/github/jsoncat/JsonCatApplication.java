@@ -11,7 +11,7 @@ import com.github.jsoncat.server.HttpServer;
 public class JsonCatApplication {
     public static void main(String[] args) {
         Banner.printBanner();
-        ApplicationContext applicationContext = ApplicationContext.getInstance();
+        ApplicationContext applicationContext = ApplicationContext.getApplicationContext();
         applicationContext.loadRoutes("com.github.demo");
         HttpServer httpServer = new HttpServer();
         httpServer.start();

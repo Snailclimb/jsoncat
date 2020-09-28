@@ -1,0 +1,22 @@
+apply plugin: 'com.github.spotbugs'
+
+spotbugs {
+    effort = 'max'
+    reportLevel = 'high'
+    showProgress = true
+    ignoreFailures = true
+}
+
+spotbugsMain {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
+spotbugsTest {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}

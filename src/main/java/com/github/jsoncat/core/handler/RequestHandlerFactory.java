@@ -1,8 +1,5 @@
 package com.github.jsoncat.core.handler;
 
-import com.github.jsoncat.core.handler.GetRequestHandler;
-import com.github.jsoncat.core.handler.PostRequestHandler;
-import com.github.jsoncat.core.handler.RequestHandler;
 import io.netty.handler.codec.http.HttpMethod;
 
 import java.util.HashMap;
@@ -13,14 +10,14 @@ import java.util.Map;
  * @createTime 2020年09月24日 14:28:00
  **/
 public class RequestHandlerFactory {
-    public static final Map<HttpMethod, RequestHandler> requestHandlers = new HashMap<>();
+    public static final Map<HttpMethod, RequestHandler> REQUEST_HANDLERS = new HashMap<>();
 
     static {
-        requestHandlers.put(HttpMethod.GET, new GetRequestHandler());
-        requestHandlers.put(HttpMethod.POST, new PostRequestHandler());
+        REQUEST_HANDLERS.put(HttpMethod.GET, new GetRequestHandler());
+        REQUEST_HANDLERS.put(HttpMethod.POST, new PostRequestHandler());
     }
 
     public static RequestHandler create(HttpMethod httpMethod) {
-        return requestHandlers.get(httpMethod);
+        return REQUEST_HANDLERS.get(httpMethod);
     }
 }

@@ -1,0 +1,14 @@
+apply plugin: "checkstyle"
+checkstyle {
+    toolVersion "7.8.1"
+    sourceSets = [project.sourceSets.main]
+    configFile file("config/checkstyle/checkstyle.xml")
+    checkstyleMain.source("src/main/java")
+    checkstyleTest.source("src/test/java")
+}
+tasks.withType(Checkstyle) {
+    reports {
+        xml.enabled false
+        html.enabled true
+    }
+}

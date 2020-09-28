@@ -1,9 +1,13 @@
 plugins {
     id 'java'
+    id "checkstyle"
+    id "com.github.spotbugs" version "4.3.0"
 }
 
 group 'com.github.jsoncat'
 version '1.0-SNAPSHOT'
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     mavenCentral()
@@ -16,7 +20,7 @@ def jacksonVersion = '2.11.2'
 def nettyVersion = '4.1.42.Final'
 def slf4jVersion = '1.7.25'
 def lombokVersion = '1.18.12'
-def junitVersion = 'junit-jupiter-api:5.3.1'
+def junitVersion = 'junit-jupiter-api:5.6.1'
 def commonsCodecVersion = '1.14'
 def reflectionsVersion = '0.9.12'
 
@@ -39,5 +43,10 @@ dependencies {
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     // 测试：junit5
     testImplementation "org.junit.jupiter:${junitVersion}"
-    testRuntimeOnly "org.junit.jupiter:${junitVersion}"
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
+
+apply from: rootProject.file("gradle/git-hooks.gradle")
+apply from: rootProject.file("gradle/checkstyle.gradle")
+apply from: rootProject.file("gradle/pmd.gradle")
+apply from: rootProject.file("gradle/spotbugs.gradle")

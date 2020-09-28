@@ -1,7 +1,6 @@
 package com.github.jsoncat.core.resolver;
 
 import com.github.jsoncat.annotation.PathVariable;
-import com.github.jsoncat.annotation.RequestParam;
 import com.github.jsoncat.common.util.ObjectUtil;
 import com.github.jsoncat.core.entity.MethodDetail;
 

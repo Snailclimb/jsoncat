@@ -20,14 +20,14 @@ import java.util.regex.Pattern;
  * @author shuang.kou
  * @createTime 2020年09月24日 16:49:00
  **/
-public class ApplicationContext {
-    private static final ApplicationContext instance = new ApplicationContext();
-    private static final Map<String, Method> getMappings = new HashMap<>();
-    private static final Map<String, Method> postMappings = new HashMap<>();
-    private static final Map<String, MethodDetail> getMethodMappings = new HashMap<>();
-    private static final Map<String, MethodDetail> postMethodMappings = new HashMap<>();
-    private static final Map<String, String> getUrlMappings = new HashMap<>();
-    private static final Map<String, String> postUrlMappings = new HashMap<>();
+public final class ApplicationContext {
+    private static final ApplicationContext APPLICATION_CONTEXT = new ApplicationContext();
+    private final Map<String, Method> getMappings = new HashMap<>();
+    private final Map<String, Method> postMappings = new HashMap<>();
+    private final Map<String, MethodDetail> getMethodMappings = new HashMap<>();
+    private final Map<String, MethodDetail> postMethodMappings = new HashMap<>();
+    private final Map<String, String> getUrlMappings = new HashMap<>();
+    private final Map<String, String> postUrlMappings = new HashMap<>();
 
     private ApplicationContext() {
 
@@ -93,8 +93,8 @@ public class ApplicationContext {
     }
 
 
-    public static ApplicationContext getInstance() {
-        return instance;
+    public static ApplicationContext getApplicationContext() {
+        return APPLICATION_CONTEXT;
     }
 
 }

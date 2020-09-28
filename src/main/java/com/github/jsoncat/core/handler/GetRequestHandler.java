@@ -31,7 +31,7 @@ public class GetRequestHandler implements RequestHandler {
         // get http request path，such as "/user"
         String requestPath = UrlUtil.getRequestPath(requestUri);
         // get target method
-        ApplicationContext applicationContext = ApplicationContext.getInstance();
+        ApplicationContext applicationContext = ApplicationContext.getApplicationContext();
         MethodDetail methodDetail = applicationContext.getMethodDetail(requestPath, HttpMethod.GET);
         if (methodDetail == null) {
             return null;

@@ -12,7 +12,11 @@ import java.lang.reflect.Parameter;
  * @createTime 2020年09月28日 14:01:00
  **/
 public class RequestBodyParameterResolver implements ParameterResolver {
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER;
+
+    static {
+        OBJECT_MAPPER = new ObjectMapper();
+    }
 
     @Override
     public Object resolve(MethodDetail methodDetail, Parameter parameter) {
@@ -20,7 +24,7 @@ public class RequestBodyParameterResolver implements ParameterResolver {
         RequestBody requestBody = parameter.getDeclaredAnnotation(RequestBody.class);
         if (requestBody != null) {
             try {
-                obj = objectMapper.readValue(methodDetail.getJson(), parameter.getType());
+                obj = OBJECT_MAPPER.readValue(methodDetail.getJson(), parameter.getType());
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }

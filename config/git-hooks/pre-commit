@@ -1,0 +1,8 @@
+#!/bin/sh
+#set -x
+
+echo "begin to execute hook"
+./gradlew clean spotbugsMain build
+RESULT=$?
+
+exit $RESULT
