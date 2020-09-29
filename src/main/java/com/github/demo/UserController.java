@@ -8,7 +8,7 @@ import com.github.jsoncat.annotation.RequestParam;
 import com.github.jsoncat.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -17,23 +17,28 @@ import java.util.List;
  **/
 @RestController("/user")
 public class UserController {
+    private static HashMap<Integer, User> users;
+    private static Integer id;
 
-    private static List<User> users = new ArrayList<>(Collections.singletonList(new User("盖伦", "德玛西亚", 18)));
+    static {
+        users = new HashMap<>();
+        users.put(1, new User("盖伦", "德玛西亚", 22));
+        id = 2;
+    }
 
     @GetMapping
     public User get(@RequestParam("name") String name, @RequestParam("des") String des, @RequestParam("age") Integer age) {
         return new User(name, des, age);
     }
 
-    @GetMapping("/{name}")
-    public User get(@PathVariable("name") String name) {
-        System.out.println(name);
-        return users.get(0);
+    @GetMapping("/{id}")
+    public User get(@PathVariable("id") Integer id) {
+        return users.get(id);
     }
 
     @PostMapping
     public List<User> create(@RequestBody UserDto userDto) {
-        users.add(new User(userDto.getName(), userDto.getDes(), userDto.getAge()));
-        return users;
+        users.put(id++, new User(userDto.getName(), userDto.getDes(), userDto.getAge()));
+        return new ArrayList<>(users.values());
     }
 }
