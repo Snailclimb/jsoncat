@@ -1,8 +1,12 @@
-package com.github.jsoncat.core.resolver;
+package com.github.jsoncat.core.factory;
 
 import com.github.jsoncat.annotation.PathVariable;
 import com.github.jsoncat.annotation.RequestBody;
 import com.github.jsoncat.annotation.RequestParam;
+import com.github.jsoncat.core.resolver.ParameterResolver;
+import com.github.jsoncat.core.resolver.PathVariableParameterResolver;
+import com.github.jsoncat.core.resolver.RequestBodyParameterResolver;
+import com.github.jsoncat.core.resolver.RequestParamParameterResolver;
 
 import java.lang.reflect.Parameter;
 

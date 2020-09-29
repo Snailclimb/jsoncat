@@ -2,10 +2,10 @@ package com.github.jsoncat.core.handler;
 
 import com.github.jsoncat.common.util.ReflectionUtil;
 import com.github.jsoncat.common.util.UrlUtil;
-import com.github.jsoncat.core.ApplicationContext;
 import com.github.jsoncat.core.entity.MethodDetail;
 import com.github.jsoncat.core.resolver.ParameterResolver;
-import com.github.jsoncat.core.resolver.ParameterResolverFactory;
+import com.github.jsoncat.core.factory.ParameterResolverFactory;
+import com.github.jsoncat.core.factory.MethodDetailFactory;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
@@ -31,8 +31,7 @@ public class PostRequestHandler implements RequestHandler {
         // get http request path，such as "/user"
         String requestPath = UrlUtil.getRequestPath(requestUri);
         // get target method
-        ApplicationContext applicationContext = ApplicationContext.getApplicationContext();
-        MethodDetail methodDetail = applicationContext.getMethodDetail(requestPath, HttpMethod.POST);
+        MethodDetail methodDetail = MethodDetailFactory.getMethodDetail(requestPath, HttpMethod.POST);
         if (methodDetail == null) {
             return null;
         }
