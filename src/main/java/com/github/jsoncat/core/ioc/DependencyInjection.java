@@ -65,6 +65,7 @@ public class DependencyInjection {
     /**
      * 获取接口对应的实现类
      */
+    @SuppressWarnings("unchecked")
     public static Set<Class<?>> getSubClass(String packageName, Class<?> interfaceClass) {
         Reflections reflections = new Reflections(packageName);
         return reflections.getSubTypesOf((Class<Object>) interfaceClass);

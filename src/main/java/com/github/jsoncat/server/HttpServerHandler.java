@@ -1,6 +1,5 @@
 package com.github.jsoncat.server;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.jsoncat.common.util.UrlUtil;
 import com.github.jsoncat.core.handler.RequestHandler;
 import com.github.jsoncat.core.factory.RequestHandlerFactory;

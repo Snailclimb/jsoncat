@@ -4,7 +4,6 @@ import com.github.jsoncat.annotation.GetMapping;
 import com.github.jsoncat.annotation.PostMapping;
 import com.github.jsoncat.annotation.RestController;
 import com.github.jsoncat.common.util.UrlUtil;
-import com.github.jsoncat.core.ApplicationContext;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;

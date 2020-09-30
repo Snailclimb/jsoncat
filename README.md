@@ -48,8 +48,9 @@
 
 #### IOC
 
-- [ ] `@Autowired` ：注入对象
-- [ ] `@Component`：声明对象被 IOC 容器管理
+- [x] `@Autowired` ：注入对象
+- [x] `@Component`：声明对象被 IOC 容器管理
+- [x] `@Qualifier`: 指定注入的bean
 
 #### AOP
 

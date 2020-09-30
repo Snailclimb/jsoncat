@@ -1,6 +1,5 @@
 package com.github.demo.user;
 
-import com.github.demo.sms.SmsService;
 import com.github.jsoncat.annotation.Autowired;
 import com.github.jsoncat.annotation.GetMapping;
 import com.github.jsoncat.annotation.PathVariable;

@@ -34,13 +34,15 @@ public class ReflectionUtil {
      * 设置成员变量的值
      */
     public static void setField(Object obj, Field field, Object value) {
+
+        field.setAccessible(true);
         try {
-            field.setAccessible(true); //去除私有权限
             field.set(obj, value);
-        } catch (Exception e) {
+        } catch (IllegalAccessException e) {
             log.error("set field failed", e);
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+
     }
 
     /**
