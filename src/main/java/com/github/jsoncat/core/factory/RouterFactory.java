@@ -11,13 +11,21 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * Save routing-related mapping information
+ *
  * @author shuang.kou
  * @createTime 2020年09月29日 13:27:00
  **/
 public class RouterFactory {
+    // get request url -> target method.
+    // eg: "^/user/[\u4e00-\u9fa5_a-zA-Z0-9]+/?$" -> UserController.get(java.lang.Integer)
     public static final Map<String, Method> GET_REQUEST_MAPPINGS = new HashMap<>();
+    // post request url -> target method.
     public static final Map<String, Method> POST_REQUEST_MAPPINGS = new HashMap<>();
+    // formatted get request url -> original url
+    // eg : "^/user/[\u4e00-\u9fa5_a-zA-Z0-9]+/?$" -> /user/{id}
     public static final Map<String, String> GET_URL_MAPPINGS = new HashMap<>();
+    // formatted post request url -> original url
     public static final Map<String, String> POST_URL_MAPPINGS = new HashMap<>();
 
     public static void loadRoutes() {

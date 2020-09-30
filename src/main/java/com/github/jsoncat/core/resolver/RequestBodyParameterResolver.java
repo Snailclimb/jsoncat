@@ -8,6 +8,8 @@ import com.github.jsoncat.core.entity.MethodDetail;
 import java.lang.reflect.Parameter;
 
 /**
+ * process @RequestBody annotation
+ *
  * @author shuang.kou
  * @createTime 2020年09月28日 14:01:00
  **/

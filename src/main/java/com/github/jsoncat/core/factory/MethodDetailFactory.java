@@ -16,18 +16,18 @@ public class MethodDetailFactory {
 
     public static MethodDetail getMethodDetail(String requestPath, HttpMethod httpMethod) {
         if (httpMethod == HttpMethod.GET) {
-            return handle(requestPath, RouterFactory.GET_REQUEST_MAPPINGS, RouterFactory.GET_URL_MAPPINGS);
+            return buildMethodDetail(requestPath, RouterFactory.GET_REQUEST_MAPPINGS, RouterFactory.GET_URL_MAPPINGS);
         }
 
         if (httpMethod == HttpMethod.POST) {
-            return handle(requestPath, RouterFactory.POST_REQUEST_MAPPINGS, RouterFactory.POST_URL_MAPPINGS);
+            return buildMethodDetail(requestPath, RouterFactory.POST_REQUEST_MAPPINGS, RouterFactory.POST_URL_MAPPINGS);
         }
         return null;
     }
 
-    private static MethodDetail handle(String requestPath, Map<String, Method> mappings, Map<String, String> urlMappings) {
+    private static MethodDetail buildMethodDetail(String requestPath, Map<String, Method> requestMappings, Map<String, String> urlMappings) {
         MethodDetail methodDetail = new MethodDetail();
-        mappings.forEach((key, value) -> {
+        requestMappings.forEach((key, value) -> {
             Pattern pattern = Pattern.compile(key);
             boolean b = pattern.matcher(requestPath).find();
             if (b) {

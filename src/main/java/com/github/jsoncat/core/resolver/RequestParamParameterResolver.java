@@ -7,6 +7,8 @@ import com.github.jsoncat.core.entity.MethodDetail;
 import java.lang.reflect.Parameter;
 
 /**
+ * process @RequestParam annotation
+ *
  * @author shuang.kou
  * @createTime 2020年09月27日 20:58:00
  **/
