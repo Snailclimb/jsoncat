@@ -1,7 +1,10 @@
 package com.github.jsoncat.core.ioc;
 
 import com.github.jsoncat.annotation.Autowired;
+import com.github.jsoncat.annotation.Qualifier;
 import com.github.jsoncat.common.util.ReflectionUtil;
+import com.github.jsoncat.exception.CanNotDetermineTargetBeanException;
+import com.github.jsoncat.exception.InterfaceNotHaveImplementedClassException;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Field;
@@ -30,17 +33,28 @@ public class DependencyInjection {
                         if (beanField.isAnnotationPresent(Autowired.class)) {
                             //属性类型
                             Class<?> beanFieldClass = beanField.getType();
+                            String beanName = beanFieldClass.getName();
+                            Object beanFieldInstance = beans.get(beanName);
                             if (beanFieldClass.isInterface()) {
-                                //TODO 如果beanFieldClass是接口, 就获取接口对应的实现类(
-                                //TODO 一个接口被多个类实现的情况处理
-                                Set<Class<?>> subClass = getSubClass(packageName, beanFieldClass);
-                                System.out.println(subClass.toString());
+                                Set<Class<?>> subClasses = getSubClass(packageName, beanFieldClass);
+                                if (subClasses.size() == 0) {
+                                    throw new InterfaceNotHaveImplementedClassException("interface does not have implemented class exception");
+                                }
+                                if (subClasses.size() == 1) {
+                                    Class<?> aClass = subClasses.iterator().next();
+                                    beanFieldInstance = ReflectionUtil.newInstance(aClass);
+                                }
+                                if (subClasses.size() > 1) {
+                                    Qualifier qualifier = beanField.getDeclaredAnnotation(Qualifier.class);
+                                    beanName = qualifier == null ? beanName : qualifier.value();
+                                    beanFieldInstance = beans.get(beanName);
+                                }
+
                             }
-                            //获取Class类对应的实例
-                            Object beanFieldInstance = beans.get(beanFieldClass.getName());
-                            if (beanFieldInstance != null) {
-                                ReflectionUtil.setField(beanInstance, beanField, beanFieldInstance);
+                            if (beanFieldInstance == null) {
+                                throw new CanNotDetermineTargetBeanException("can not determine target bean");
                             }
+                            ReflectionUtil.setField(beanInstance, beanField, beanFieldInstance);
                         }
                     }
                 }

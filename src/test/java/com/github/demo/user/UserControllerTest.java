@@ -1,5 +1,7 @@
-package com.github.demo;
+package com.github.demo.user;
 
+import com.github.demo.TestConfig;
+import com.github.demo.user.UserDto;
 import com.github.jsoncat.serialize.impl.JacksonSerializer;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
@@ -41,7 +43,7 @@ class UserControllerTest {
 
     }
 
-    //test RequestBody
+    //test @RequestBody
     @Test
     void should_create_user_successful() {
         UserDto user = new UserDto("压缩", "哈撒尅", 18);

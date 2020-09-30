@@ -13,7 +13,7 @@ class AnnotatedClassScannerTest {
     @Test
     void should_scan_the_annotated_class() {
         Set<Class<?>> annotatedClasses = AnnotatedClassScanner.scan("com.github.demo", RestController.class);
-        assertEquals(1, annotatedClasses.size());
+        assertEquals(2, annotatedClasses.size());
     }
 
 }

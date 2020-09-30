@@ -15,15 +15,14 @@ import java.util.regex.Pattern;
 public class MethodDetailFactory {
 
     public static MethodDetail getMethodDetail(String requestPath, HttpMethod httpMethod) {
-        MethodDetail methodDetail = null;
         if (httpMethod == HttpMethod.GET) {
-            methodDetail = handle(requestPath, RouterFactory.GET_REQUEST_MAPPINGS, RouterFactory.GET_URL_MAPPINGS);
+            return handle(requestPath, RouterFactory.GET_REQUEST_MAPPINGS, RouterFactory.GET_URL_MAPPINGS);
         }
 
         if (httpMethod == HttpMethod.POST) {
-            methodDetail = handle(requestPath, RouterFactory.POST_REQUEST_MAPPINGS, RouterFactory.GET_URL_MAPPINGS);
+            return handle(requestPath, RouterFactory.POST_REQUEST_MAPPINGS, RouterFactory.POST_URL_MAPPINGS);
         }
-        return methodDetail;
+        return null;
     }
 
     private static MethodDetail handle(String requestPath, Map<String, Method> mappings, Map<String, String> urlMappings) {

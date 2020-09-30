@@ -26,7 +26,7 @@ public class RouterFactory {
         for (Class<?> aClass : classes) {
             RestController restController = aClass.getAnnotation(RestController.class);
             if (null != restController) {
-                Method[] methods = aClass.getMethods();
+                Method[] methods = aClass.getDeclaredMethods();
                 String baseUrl = restController.value();
                 for (Method method : methods) {
                     if (method.isAnnotationPresent(GetMapping.class)) {

@@ -1,4 +1,4 @@
-package com.github.demo;
+package com.github.demo.user;
 
 import com.github.jsoncat.annotation.Component;
 import com.github.jsoncat.annotation.RequestBody;

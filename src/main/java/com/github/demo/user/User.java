@@ -1,17 +1,15 @@
-package com.github.demo;
+package com.github.demo.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * @author shuang.kou
- * @createTime 2020年09月27日 10:19:00
+ * @createTime 2020年09月24日 14:52:00
  **/
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class UserDto {
+public class User {
     private String name;
     private String des;
     private Integer age;
