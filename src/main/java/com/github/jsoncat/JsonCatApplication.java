@@ -12,7 +12,7 @@ public class JsonCatApplication {
     public static void main(String[] args) {
         Banner.printBanner();
         ApplicationContext applicationContext = ApplicationContext.getApplicationContext();
-        applicationContext.loadClass("com.github.demo");
+        applicationContext.run("com.github.demo");
         HttpServer httpServer = new HttpServer();
         httpServer.start();
     }

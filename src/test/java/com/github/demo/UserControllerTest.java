@@ -43,10 +43,10 @@ class UserControllerTest {
 
     //test RequestBody
     @Test
-    void should_create_get_successful() {
+    void should_create_user_successful() {
         UserDto user = new UserDto("压缩", "哈撒尅", 18);
         with().body(jacksonSerializer.serialize(user)).header("Content-Type", "application/json")
-                .when().post(TestConfig.host + "/user").
+                .when().post("/user").
                 then().
                 statusCode(200);
 

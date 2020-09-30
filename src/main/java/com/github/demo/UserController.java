@@ -1,5 +1,6 @@
 package com.github.demo;
 
+import com.github.jsoncat.annotation.Autowired;
 import com.github.jsoncat.annotation.GetMapping;
 import com.github.jsoncat.annotation.PathVariable;
 import com.github.jsoncat.annotation.PostMapping;
@@ -10,6 +11,7 @@ import com.github.jsoncat.annotation.RestController;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author shuang.kou
@@ -17,14 +19,10 @@ import java.util.List;
  **/
 @RestController("/user")
 public class UserController {
-    private static HashMap<Integer, User> users;
-    private static Integer id;
-
-    static {
-        users = new HashMap<>();
-        users.put(1, new User("盖伦", "德玛西亚", 22));
-        id = 2;
-    }
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private SmsService smsService;
 
     @GetMapping
     public User get(@RequestParam("name") String name, @RequestParam("des") String des, @RequestParam("age") Integer age) {
@@ -33,12 +31,11 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User get(@PathVariable("id") Integer id) {
-        return users.get(id);
+        return userService.get(id);
     }
 
     @PostMapping
     public List<User> create(@RequestBody UserDto userDto) {
-        users.put(id++, new User(userDto.getName(), userDto.getDes(), userDto.getAge()));
-        return new ArrayList<>(users.values());
+        return userService.create(userDto);
     }
 }

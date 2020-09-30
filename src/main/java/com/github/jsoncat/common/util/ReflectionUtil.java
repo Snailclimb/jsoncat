@@ -1,7 +1,11 @@
 package com.github.jsoncat.common.util;
 
+import com.github.jsoncat.annotation.Component;
+import com.github.jsoncat.annotation.RestController;
+import com.github.jsoncat.core.ioc.BeanFactory;
 import lombok.extern.slf4j.Slf4j;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -11,6 +15,34 @@ import java.lang.reflect.Method;
  **/
 @Slf4j
 public class ReflectionUtil {
+
+    /**
+     * create object instance through class
+     */
+    public static Object newInstance(Class<?> cls) {
+        Object instance = null;
+        try {
+            instance = cls.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            log.error("new instance failed", e);
+            e.printStackTrace();
+        }
+        return instance;
+    }
+
+    /**
+     * 设置成员变量的值
+     */
+    public static void setField(Object obj, Field field, Object value) {
+        try {
+            field.setAccessible(true); //去除私有权限
+            field.set(obj, value);
+        } catch (Exception e) {
+            log.error("set field failed", e);
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * @param method target method
      * @param args   method parameters
@@ -20,11 +52,20 @@ public class ReflectionUtil {
         Object result = null;
         try {
             // get the object that declared this method
-            Object targetObject = method.getDeclaringClass().newInstance();
+            Class<?> declaringClass = method.getDeclaringClass();
+            String beanName = "";
+            if (declaringClass.isAnnotationPresent(RestController.class)) {
+                beanName = declaringClass.getName();
+            }
+            if (declaringClass.isAnnotationPresent(Component.class)) {
+                Component component = declaringClass.getAnnotation(Component.class);
+                beanName = "".equals(component.name()) ? declaringClass.getName() : component.name();
+            }
+            Object targetObject = BeanFactory.BEANS.get(beanName);
             // invoke target method through reflection
             result = method.invoke(targetObject, args);
             log.info("invoke target method successfully ,result is: [{}]", result.toString());
-        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
         return result;
