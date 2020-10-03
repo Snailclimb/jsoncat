@@ -1,9 +1,9 @@
-package com.github.jsoncat.core.resolver;
+package com.github.jsoncat.core.springmvc.resolver;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.jsoncat.annotation.RequestBody;
-import com.github.jsoncat.core.entity.MethodDetail;
+import com.github.jsoncat.annotation.springmvc.RequestBody;
+import com.github.jsoncat.entity.MethodDetail;
 
 import java.lang.reflect.Parameter;
 

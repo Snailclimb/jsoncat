@@ -1,8 +1,8 @@
-package com.github.jsoncat.core.factory;
+package com.github.jsoncat.core.springmvc.factory;
 
-import com.github.jsoncat.core.handler.GetRequestHandler;
-import com.github.jsoncat.core.handler.PostRequestHandler;
-import com.github.jsoncat.core.handler.RequestHandler;
+import com.github.jsoncat.core.springmvc.handler.GetRequestHandler;
+import com.github.jsoncat.core.springmvc.handler.PostRequestHandler;
+import com.github.jsoncat.core.springmvc.handler.RequestHandler;
 import io.netty.handler.codec.http.HttpMethod;
 
 import java.util.HashMap;

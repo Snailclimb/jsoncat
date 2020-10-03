@@ -1,8 +1,8 @@
-package com.github.jsoncat.core.resolver;
+package com.github.jsoncat.core.springmvc.resolver;
 
-import com.github.jsoncat.annotation.RequestParam;
+import com.github.jsoncat.annotation.springmvc.RequestParam;
 import com.github.jsoncat.common.util.ObjectUtil;
-import com.github.jsoncat.core.entity.MethodDetail;
+import com.github.jsoncat.entity.MethodDetail;
 
 import java.lang.reflect.Parameter;
 

@@ -1,12 +1,12 @@
-package com.github.jsoncat.core.factory;
+package com.github.jsoncat.core.springmvc.factory;
 
-import com.github.jsoncat.annotation.PathVariable;
-import com.github.jsoncat.annotation.RequestBody;
-import com.github.jsoncat.annotation.RequestParam;
-import com.github.jsoncat.core.resolver.ParameterResolver;
-import com.github.jsoncat.core.resolver.PathVariableParameterResolver;
-import com.github.jsoncat.core.resolver.RequestBodyParameterResolver;
-import com.github.jsoncat.core.resolver.RequestParamParameterResolver;
+import com.github.jsoncat.annotation.springmvc.PathVariable;
+import com.github.jsoncat.annotation.springmvc.RequestBody;
+import com.github.jsoncat.annotation.springmvc.RequestParam;
+import com.github.jsoncat.core.springmvc.resolver.ParameterResolver;
+import com.github.jsoncat.core.springmvc.resolver.PathVariableParameterResolver;
+import com.github.jsoncat.core.springmvc.resolver.RequestBodyParameterResolver;
+import com.github.jsoncat.core.springmvc.resolver.RequestParamParameterResolver;
 
 import java.lang.reflect.Parameter;
 

@@ -1,8 +1,8 @@
-package com.github.jsoncat.core.resolver;
+package com.github.jsoncat.core.springmvc.resolver;
 
-import com.github.jsoncat.annotation.PathVariable;
+import com.github.jsoncat.annotation.springmvc.PathVariable;
 import com.github.jsoncat.common.util.ObjectUtil;
-import com.github.jsoncat.core.entity.MethodDetail;
+import com.github.jsoncat.entity.MethodDetail;
 
 import java.lang.reflect.Parameter;
 import java.util.Map;
@@ -16,9 +16,7 @@ import java.util.Map;
 public class PathVariableParameterResolver implements ParameterResolver {
     @Override
     public Object resolve(MethodDetail methodDetail, Parameter parameter) {
-        // 如果是 restful 风格的占位符
         PathVariable pathVariable = parameter.getDeclaredAnnotation(PathVariable.class);
-        // 获取占位符名称
         String requestParameter = pathVariable.value();
         Map<String, String> urlParameterMappings = methodDetail.getUrlParameterMappings();
         String requestParameterValue = urlParameterMappings.get(requestParameter);

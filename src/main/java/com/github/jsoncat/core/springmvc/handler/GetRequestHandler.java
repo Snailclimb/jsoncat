@@ -1,11 +1,11 @@
-package com.github.jsoncat.core.handler;
+package com.github.jsoncat.core.springmvc.handler;
 
 import com.github.jsoncat.common.util.ReflectionUtil;
 import com.github.jsoncat.common.util.UrlUtil;
-import com.github.jsoncat.core.entity.MethodDetail;
-import com.github.jsoncat.core.resolver.ParameterResolver;
-import com.github.jsoncat.core.factory.ParameterResolverFactory;
-import com.github.jsoncat.core.factory.MethodDetailFactory;
+import com.github.jsoncat.entity.MethodDetail;
+import com.github.jsoncat.core.springmvc.factory.ParameterResolverFactory;
+import com.github.jsoncat.core.springmvc.factory.RouteMethodMapper;
+import com.github.jsoncat.core.springmvc.resolver.ParameterResolver;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class GetRequestHandler implements RequestHandler {
         // get http request path，such as "/user"
         String requestPath = UrlUtil.getRequestPath(requestUri);
         // get target method
-        MethodDetail methodDetail = MethodDetailFactory.getMethodDetail(requestPath, HttpMethod.GET);
+        MethodDetail methodDetail = RouteMethodMapper.getMethodDetail(requestPath, HttpMethod.GET);
         if (methodDetail == null) {
             return null;
         }

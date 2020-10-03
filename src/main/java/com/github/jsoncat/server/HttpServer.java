@@ -45,7 +45,7 @@ public class HttpServer {
                             ch.pipeline().addLast("decoder", new HttpRequestDecoder())
                                     .addLast("encoder", new HttpResponseEncoder())
                                     .addLast("aggregator", new HttpObjectAggregator(512 * 1024))
-                                    .addLast("com/github/jsoncat/core/handler", new HttpServerHandler());
+                                    .addLast("com/github/jsoncat/core/springmvc/handler", new HttpServerHandler());
                         }
                     });
             Channel ch = b.bind(PORT).sync().channel();

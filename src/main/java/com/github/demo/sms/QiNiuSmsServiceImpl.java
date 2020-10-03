@@ -1,6 +1,6 @@
 package com.github.demo.sms;
 
-import com.github.jsoncat.annotation.Component;
+import com.github.jsoncat.annotation.ioc.Component;
 
 /**
  * @author shuang.kou

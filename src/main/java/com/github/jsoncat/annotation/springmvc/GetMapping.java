@@ -1,4 +1,4 @@
-package com.github.jsoncat.annotation;
+package com.github.jsoncat.annotation.springmvc;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

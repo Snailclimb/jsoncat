@@ -1,7 +1,7 @@
 package com.github.demo.user;
 
-import com.github.jsoncat.annotation.Component;
-import com.github.jsoncat.annotation.RequestBody;
+import com.github.jsoncat.annotation.ioc.Component;
+import com.github.jsoncat.annotation.springmvc.RequestBody;
 
 import java.util.ArrayList;
 import java.util.HashMap;

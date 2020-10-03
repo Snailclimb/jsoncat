@@ -1,7 +1,7 @@
 package com.github.jsoncat.core.ioc;
 
-import com.github.jsoncat.annotation.Autowired;
-import com.github.jsoncat.annotation.Qualifier;
+import com.github.jsoncat.annotation.ioc.Autowired;
+import com.github.jsoncat.annotation.ioc.Qualifier;
 import com.github.jsoncat.common.util.ReflectionUtil;
 import com.github.jsoncat.exception.CanNotDetermineTargetBeanException;
 import com.github.jsoncat.exception.InterfaceNotHaveImplementedClassException;

@@ -1,12 +1,12 @@
 package com.github.demo.user;
 
-import com.github.jsoncat.annotation.Autowired;
-import com.github.jsoncat.annotation.GetMapping;
-import com.github.jsoncat.annotation.PathVariable;
-import com.github.jsoncat.annotation.PostMapping;
-import com.github.jsoncat.annotation.RequestBody;
-import com.github.jsoncat.annotation.RequestParam;
-import com.github.jsoncat.annotation.RestController;
+import com.github.jsoncat.annotation.ioc.Autowired;
+import com.github.jsoncat.annotation.springmvc.GetMapping;
+import com.github.jsoncat.annotation.springmvc.PathVariable;
+import com.github.jsoncat.annotation.springmvc.PostMapping;
+import com.github.jsoncat.annotation.springmvc.RequestBody;
+import com.github.jsoncat.annotation.springmvc.RequestParam;
+import com.github.jsoncat.annotation.springmvc.RestController;
 
 import java.util.List;
 

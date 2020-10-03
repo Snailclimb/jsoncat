@@ -1,4 +1,4 @@
-package com.github.jsoncat.core.handler;
+package com.github.jsoncat.core.springmvc.handler;
 
 import io.netty.handler.codec.http.FullHttpRequest;
 

@@ -1,7 +1,7 @@
 package com.github.jsoncat.core;
 
-import com.github.jsoncat.core.factory.ClassFactory;
-import com.github.jsoncat.core.factory.RouterFactory;
+import com.github.jsoncat.factory.ClassFactory;
+import com.github.jsoncat.core.springmvc.factory.RouteMethodMapper;
 import com.github.jsoncat.core.ioc.BeanFactory;
 import com.github.jsoncat.core.ioc.DependencyInjection;
 
@@ -19,7 +19,7 @@ public final class ApplicationContext {
         // Load classes with custom annotation
         ClassFactory.loadClass(packageName);
         // Load routes
-        RouterFactory.loadRoutes();
+        RouteMethodMapper.loadRoutes();
         // Load beans managed by the ioc container
         BeanFactory.loadBeans();
         // Traverse all the beans in the ioc container and inject instances for all @Autowired annotated attributes.

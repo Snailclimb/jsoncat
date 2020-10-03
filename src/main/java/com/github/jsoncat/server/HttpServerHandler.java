@@ -1,8 +1,8 @@
 package com.github.jsoncat.server;
 
 import com.github.jsoncat.common.util.UrlUtil;
-import com.github.jsoncat.core.handler.RequestHandler;
-import com.github.jsoncat.core.factory.RequestHandlerFactory;
+import com.github.jsoncat.core.springmvc.handler.RequestHandler;
+import com.github.jsoncat.core.springmvc.factory.RequestHandlerFactory;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

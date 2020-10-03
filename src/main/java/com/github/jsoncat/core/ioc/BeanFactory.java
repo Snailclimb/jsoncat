@@ -1,9 +1,9 @@
 package com.github.jsoncat.core.ioc;
 
-import com.github.jsoncat.annotation.Component;
-import com.github.jsoncat.annotation.RestController;
+import com.github.jsoncat.annotation.ioc.Component;
+import com.github.jsoncat.annotation.springmvc.RestController;
 import com.github.jsoncat.common.util.ReflectionUtil;
-import com.github.jsoncat.core.factory.ClassFactory;
+import com.github.jsoncat.factory.ClassFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

@@ -1,13 +1,17 @@
 package com.github.jsoncat.common.util;
 
-import com.github.jsoncat.annotation.Component;
-import com.github.jsoncat.annotation.RestController;
+import com.github.jsoncat.annotation.ioc.Component;
+import com.github.jsoncat.annotation.springmvc.RestController;
 import com.github.jsoncat.core.ioc.BeanFactory;
 import lombok.extern.slf4j.Slf4j;
+import org.reflections.Reflections;
+import org.reflections.scanners.TypeAnnotationsScanner;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Set;
 
 /**
  * @author shuang.kou
@@ -15,9 +19,25 @@ import java.lang.reflect.Method;
  **/
 @Slf4j
 public class ReflectionUtil {
+    /**
+     * scan the classes marked by the specified annotation in the specified package
+     *
+     * @param packageName specified package name
+     * @param annotation  specified annotation
+     * @return the classes marked by the specified annotation in the specified package
+     */
+    public static Set<Class<?>> scanAnnotatedClass(String packageName, Class<? extends Annotation> annotation) {
+        Reflections reflections = new Reflections(packageName, new TypeAnnotationsScanner());
+        Set<Class<?>> annotatedClass = reflections.getTypesAnnotatedWith(annotation, true);
+        log.info("The number of class Annotated with  @RestController :[{}]", annotatedClass.size());
+        return annotatedClass;
+    }
 
     /**
      * create object instance through class
+     *
+     * @param cls target class
+     * @return object created by the target class
      */
     public static Object newInstance(Class<?> cls) {
         Object instance = null;
@@ -31,7 +51,11 @@ public class ReflectionUtil {
     }
 
     /**
-     * 设置成员变量的值
+     * set the value of a field in the object
+     *
+     * @param obj   target object
+     * @param field target field
+     * @param value the value assigned to the field
      */
     public static void setField(Object obj, Field field, Object value) {
 
@@ -72,5 +96,6 @@ public class ReflectionUtil {
         }
         return result;
     }
+
 
 }

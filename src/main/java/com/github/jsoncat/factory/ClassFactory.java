@@ -1,8 +1,8 @@
-package com.github.jsoncat.core.factory;
+package com.github.jsoncat.factory;
 
-import com.github.jsoncat.annotation.Component;
-import com.github.jsoncat.annotation.RestController;
-import com.github.jsoncat.core.scanner.AnnotatedClassScanner;
+import com.github.jsoncat.annotation.ioc.Component;
+import com.github.jsoncat.annotation.springmvc.RestController;
+import com.github.jsoncat.common.util.ReflectionUtil;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;
@@ -17,8 +17,8 @@ public class ClassFactory {
     public static final Map<Class<? extends Annotation>, Set<Class<?>>> CLASSES = new ConcurrentHashMap<>();
 
     public static void loadClass(String packageName) {
-        Set<Class<?>> restControllerSets = AnnotatedClassScanner.scan(packageName, RestController.class);
-        Set<Class<?>> componentSets = AnnotatedClassScanner.scan(packageName, Component.class);
+        Set<Class<?>> restControllerSets = ReflectionUtil.scanAnnotatedClass(packageName, RestController.class);
+        Set<Class<?>> componentSets = ReflectionUtil.scanAnnotatedClass(packageName, Component.class);
         CLASSES.put(RestController.class, restControllerSets);
         CLASSES.put(Component.class, componentSets);
     }
