@@ -44,6 +44,8 @@ dependencies {
     // 测试：junit5
     testImplementation "org.junit.jupiter:${junitVersion}"
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    // 接口测试：rest-assured
+    testImplementation 'io.rest-assured:rest-assured:4.3.1'
 }
 
 apply from: rootProject.file("gradle/git-hooks.gradle")

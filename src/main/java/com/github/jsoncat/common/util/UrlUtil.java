@@ -51,9 +51,10 @@ public class UrlUtil {
     }
 
     /**
-     * for example :
-     * if requestPath="/user/{name}"  url="/user/盖伦"
-     * this method will return:
+     * Match the request path parameter to the URL parameter
+     *
+     * eg: requestPath="/user/1" url="/user/{id}"
+     * this method will return:{"id" -> "1","user" -> "user"}
      */
     public static Map<String, String> getUrlParameterMappings(String requestPath, String url) {
         String[] requestParams = requestPath.split("/");

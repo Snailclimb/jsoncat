@@ -1,10 +1,15 @@
-task applyGitHooks(type: Copy) {
-    // TODO remove
-    def pushFile = rootProject.file(".git/hooks/pre-push")
-    if (pushFile.exists()) pushFile.delete()
+static def isWindows() {
+    return org.gradle.internal.os.OperatingSystem.current().isWindows()
+}
 
+task applyGitHooks(type: Copy) {
     from { rootProject.file("config/git-hooks/pre-commit") }
     into { rootProject.file(".git/hooks") }
-    Runtime.getRuntime().exec("chmod -R +x .git/hooks/")
+    if (!isWindows()) {
+        println "not on windows"
+        Runtime.getRuntime().exec("chmod -R +x .git/hooks/")
+    } else {
+        println "windows"
+    }
 }
 compileJava.dependsOn applyGitHooks

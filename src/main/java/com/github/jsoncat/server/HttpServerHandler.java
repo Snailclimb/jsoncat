@@ -1,9 +1,8 @@
 package com.github.jsoncat.server;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.jsoncat.common.util.UrlUtil;
-import com.github.jsoncat.core.handler.RequestHandler;
-import com.github.jsoncat.core.handler.RequestHandlerFactory;
+import com.github.jsoncat.core.springmvc.handler.RequestHandler;
+import com.github.jsoncat.core.springmvc.factory.RequestHandlerFactory;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -24,7 +23,7 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpReque
     private static final AsciiString KEEP_ALIVE = AsciiString.cached("keep-alive");
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest fullHttpRequest) throws JsonProcessingException {
+    protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest fullHttpRequest) {
         log.info("Handle http request:{}", fullHttpRequest);
         String uri = fullHttpRequest.uri();
         if (uri.equals(FAVICON_ICO)) {

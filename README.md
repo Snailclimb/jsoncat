@@ -1,12 +1,4 @@
-昨天早上，6 点多一点就起来写代码了，前天晚上和朋友一起吃晚饭回来之后也搞到很晚，有时候想尽快把某些东西写完的时候确实是会这样。
-
-但是，**说实话效率会降低很多，不推荐这样做**。像我之前写[guide-rpc-framework](https://github.com/Snailclimb/guide-rpc-framework) 的时候，经常周末不出门，一坐就是一天。到了晚上整个人一脸油，眼睛还很酸，效率低了太多。
-
-目前的话，已经把 Spring MVC 相关常用的注解比如`@GetMapping` 、`@PostMapping` 、`@PathVariable` 写完了。
-
-整个项目的目录结构如下，还算比较清晰。我也已经将项目开源出来了，地址：[https://github.com/Snailclimb/jsoncat](https://github.com/Snailclimb/jsoncat) 。_原创开源不易，觉得不错的话，欢迎给良心作者 1 个 star 鼓励一下！_
-
-![](https://guide-blog-images.oss-cn-shenzhen.aliyuncs.com/2020-9/image-20200929082415631.png)
+原创开源不易，觉得不错的话，欢迎给良心作者 1 个 star 鼓励一下！
 
 ## 介绍
 
@@ -48,8 +40,9 @@
 
 #### IOC
 
-- [ ] `@Autowired` ：注入对象
-- [ ] `@Component`：声明对象被 IOC 容器管理
+- [x] `@Autowired` ：注入对象
+- [x] `@Component`：声明对象被 IOC 容器管理
+- [x] `@Qualifier`: 指定注入的bean
 
 #### AOP
 
