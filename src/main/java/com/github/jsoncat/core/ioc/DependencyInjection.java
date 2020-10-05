@@ -22,44 +22,57 @@ public class DependencyInjection {
      */
     public static void dependencyInjection(String packageName) {
         Map<String, Object> beans = BeanFactory.BEANS;
-        if (beans.size() > 0) {
-            for (Map.Entry<String, Object> beanEntry : beans.entrySet()) {
-                Object beanInstance = beanEntry.getValue();
-                Class<?> beanClass = beanInstance.getClass();
-                Field[] beanFields = beanClass.getDeclaredFields();
-                //遍历bean的属性
-                if (beanFields.length > 0) {
-                    for (Field beanField : beanFields) {
-                        if (beanField.isAnnotationPresent(Autowired.class)) {
-                            //属性类型
-                            Class<?> beanFieldClass = beanField.getType();
-                            String beanName = beanFieldClass.getName();
-                            Object beanFieldInstance = beans.get(beanName);
-                            if (beanFieldClass.isInterface()) {
-                                Set<Class<?>> subClasses = getSubClass(packageName, beanFieldClass);
-                                if (subClasses.size() == 0) {
-                                    throw new InterfaceNotHaveImplementedClassException("interface does not have implemented class exception");
-                                }
-                                if (subClasses.size() == 1) {
-                                    Class<?> aClass = subClasses.iterator().next();
-                                    beanFieldInstance = ReflectionUtil.newInstance(aClass);
-                                }
-                                if (subClasses.size() > 1) {
-                                    Qualifier qualifier = beanField.getDeclaredAnnotation(Qualifier.class);
-                                    beanName = qualifier == null ? beanName : qualifier.value();
-                                    beanFieldInstance = beans.get(beanName);
-                                }
-
-                            }
-                            if (beanFieldInstance == null) {
-                                throw new CanNotDetermineTargetBeanException("can not determine target bean");
-                            }
-                            ReflectionUtil.setField(beanInstance, beanField, beanFieldInstance);
+        if (beans.size() == 0) {
+            return;
+        }
+        beans.values().forEach(bean -> {
+            // 获取对象所属的类声明的所有字段/属性
+            Field[] beanFields = bean.getClass().getDeclaredFields();
+            if (beanFields.length == 0) {
+                return;
+            }
+            //遍历对象所属的类声明的所有字段/属性
+            for (Field beanField : beanFields) {
+                if (beanField.isAnnotationPresent(Autowired.class)) {
+                    //字段对应的类型
+                    Class<?> beanFieldClass = beanField.getType();
+                    //字段对应的类名
+                    String beanName = beanFieldClass.getName();
+                    //从bean容器中获取对应的对象
+                    Object beanFieldInstance = beans.get(beanName);
+                    //判断对象是否为接口
+                    if (beanFieldClass.isInterface()) {
+                        //如果是接口，获取接口对应的实现类
+                        Set<Class<?>> subClasses = getSubClass(packageName, beanFieldClass);
+                        //没有实现类的话就抛出异常
+                        if (subClasses.size() == 0) {
+                            throw new InterfaceNotHaveImplementedClassException("interface does not have implemented class exception");
                         }
+                        //实现类只有一个话，直接获取
+                        if (subClasses.size() == 1) {
+                            Class<?> aClass = subClasses.iterator().next();
+                            beanFieldInstance = ReflectionUtil.newInstance(aClass);
+                        }
+                        //实现类多与一个的话，根据 Qualifier 注解的值获取
+                        if (subClasses.size() > 1) {
+                            Class<?> aClass = subClasses.iterator().next();
+                            Qualifier qualifier = beanField.getDeclaredAnnotation(Qualifier.class);
+                            beanName = qualifier == null ? aClass.getName() : qualifier.value();
+                            beanFieldInstance = beans.get(beanName);
+                        }
+
                     }
+                    // 如果最后获取到的字段对象为null，就抛出异常
+                    if (beanFieldInstance == null) {
+                        throw new CanNotDetermineTargetBeanException("can not determine target bean");
+                    }
+                    //通过反射设置指定对象中的指定字段的值
+                    ReflectionUtil.setField(bean, beanField, beanFieldInstance);
                 }
             }
-        }
+        });
+
+
     }
 
     /**
@@ -69,6 +82,5 @@ public class DependencyInjection {
     public static Set<Class<?>> getSubClass(String packageName, Class<?> interfaceClass) {
         Reflections reflections = new Reflections(packageName);
         return reflections.getSubTypesOf((Class<Object>) interfaceClass);
-
     }
 }

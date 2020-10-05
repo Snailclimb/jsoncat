@@ -45,7 +45,6 @@ public class ReflectionUtil {
             instance = cls.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             log.error("new instance failed", e);
-            e.printStackTrace();
         }
         return instance;
     }

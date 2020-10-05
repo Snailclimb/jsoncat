@@ -1,3 +1,5 @@
+> 本项目已经同步到码云，地址：[https://gitee.com/SnailClimb/jsoncat](https://gitee.com/SnailClimb/jsoncat)。
+
 原创开源不易，觉得不错的话，欢迎给良心作者 1 个 star 鼓励一下！
 
 ## 介绍
@@ -16,7 +18,7 @@
 
 1. 内置由 Netty 编写 HTTP 服务器，无需额外依赖 Tomcat 之类的 web 服务
 2. 代码简洁，可读性好
-3. 支持 Spring MVC 常用的注解，用法也和 Spring MVC 一样
+3. 支持 Spring MVC 常用的注解，用法也和 Spring MVC 基本一样
 4. 后端只返回 json 数据给前端
 5. 集成了 checkstyle 、spotbugs、pmd 并设置了 commit 钩子来保证代码质量
 
@@ -67,8 +69,7 @@
 - [x] 集成 checkstyle
 - [x] 集成 spotbugs （_遇到了一点小坑，将 gradle 版本升级为 6.6.1 解决_）
 - [x] 设置 commit 钩子
-- [ ] 集成 jacoco
-- [ ] 提高测试覆盖率，增加代码稳定性，为重构提供保障
+- [x] 提高测试覆盖率，增加代码稳定性，为重构提供保障
 
 ## 功能演示
 
@@ -84,6 +85,36 @@ public class User {
 }
 ```
 
+**`UserDto.java` ：用户业务处理类**
+
+```java
+@Component
+public class UserService {
+    private Integer id = 1;
+
+    private final Map<Integer, User> users = new HashMap<Integer, User>() {
+        {
+            put(1, new User("盖伦", "德玛西亚", 22));
+        }
+    };
+
+    public User get(Integer id) {
+        return users.get(id);
+    }
+
+    public List<User> create(@RequestBody UserDto userDto) {
+        users.put(++id, new User(userDto.getName(), userDto.getDes(), userDto.getAge()));
+        return new ArrayList<>(users.values());
+
+    }
+
+    public void say() {
+        System.out.println("UserService say 你真帅！");
+    }
+}
+
+```
+
 **`UserDto.java` : 创建用户的传输对象**
 
 ```java
@@ -97,19 +128,13 @@ public class UserDto {
 }
 ```
 
-**`UserController.java`：用户层 controller**
+**`UserController.java`：用户业务与前端交互类**
 
 ```java
 @RestController("/user")
 public class UserController {
-    private static HashMap<Integer, User> users;
-    private static Integer id;
-
-    static {
-        users = new HashMap<>();
-        users.put(1, new User("盖伦", "德玛西亚", 22));
-        id = 2;
-    }
+    @Autowired
+    private UserService userService;
 
     @GetMapping
     public User get(@RequestParam("name") String name, @RequestParam("des") String des, @RequestParam("age") Integer age) {
@@ -118,13 +143,12 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User get(@PathVariable("id") Integer id) {
-        return users.get(id);
+        return userService.get(id);
     }
 
     @PostMapping
     public List<User> create(@RequestBody UserDto userDto) {
-        users.put(id++, new User(userDto.getName(), userDto.getDes(), userDto.getAge()));
-        return new ArrayList<>(users.values());
+        return userService.create(userDto);
     }
 }
 ```
