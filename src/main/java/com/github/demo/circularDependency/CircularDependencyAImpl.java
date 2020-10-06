@@ -1,13 +1,13 @@
-package com.github.demo.test;
+package com.github.demo.circularDependency;
 
 import com.github.jsoncat.annotation.ioc.Autowired;
 import com.github.jsoncat.annotation.ioc.Component;
 
-@Component(name = "TestAImpl")
-public class TestAImpl implements ITestA {
+@Component(name = "CircularDependencyAImpl")
+public class CircularDependencyAImpl implements CircularDependencyA {
 
     @Autowired
-    private ITestB testB;
+    private CircularDependencyB testB;
 
     @Override
     public void testA() {
