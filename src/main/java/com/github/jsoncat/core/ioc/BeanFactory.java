@@ -13,6 +13,7 @@ public final class BeanFactory {
 
     public static void loadBeans() {
 
+        // 遍历所有被特定注解标记的类
         ClassFactory.CLASSES.forEach((annotation, classes) -> {
             if (annotation == Component.class) {
                 //将bean实例化, 并放入bean容器中
@@ -32,5 +33,4 @@ public final class BeanFactory {
             }
         });
     }
-
 }
