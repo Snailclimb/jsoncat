@@ -14,6 +14,8 @@ import java.lang.reflect.Method;
 import java.util.Set;
 
 /**
+ * the common methods of reflection
+ *
  * @author shuang.kou
  * @createTime 2020年09月25日 14:23:00
  **/
@@ -39,7 +41,7 @@ public class ReflectionUtil {
      * @param packageName    specified package name
      * @param interfaceClass specified interface
      */
-    public static <T> Set<Class<? extends T>> getSubClass(String packageName,  Class<T> interfaceClass) {
+    public static <T> Set<Class<? extends T>> getSubClass(String packageName, Class<T> interfaceClass) {
         Reflections reflections = new Reflections(packageName);
         return reflections.getSubTypesOf(interfaceClass);
 
@@ -81,6 +83,8 @@ public class ReflectionUtil {
     }
 
     /**
+     * execute the target method
+     *
      * @param method target method
      * @param args   method parameters
      * @return the result of method execution

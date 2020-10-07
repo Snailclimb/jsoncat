@@ -1,7 +1,6 @@
 package com.github.jsoncat.core.ioc;
 
 import com.github.jsoncat.annotation.ioc.Autowired;
-import com.github.jsoncat.annotation.ioc.Component;
 import com.github.jsoncat.annotation.ioc.Qualifier;
 import com.github.jsoncat.common.util.ReflectionUtil;
 import com.github.jsoncat.core.aop.BeanPostProcessor;
@@ -48,11 +47,7 @@ public class DependencyInjection {
                 if (beanField.isAnnotationPresent(Autowired.class)) {
                     //属性类型
                     Class<?> beanFieldClass = beanField.getType();
-                    String beanName = beanFieldClass.getName();
-                    if (beanFieldClass.isAnnotationPresent(Component.class)) {
-                        Component component = beanFieldClass.getAnnotation(Component.class);
-                        beanName = "".equals(component.name()) ? beanFieldClass.getName() : component.name();
-                    }
+                    String beanName = IocUtil.getBeanName(beanFieldClass);
                     boolean newSingleton = true;
                     Object beanFieldInstance = null;
                     if (SINGLETON_OBJECTS.containsKey(beanName)) {

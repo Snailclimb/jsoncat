@@ -18,8 +18,7 @@ public final class BeanFactory {
             if (annotation == Component.class) {
                 //将bean实例化, 并放入bean容器中
                 for (Class<?> aClass : classes) {
-                    Component component = aClass.getAnnotation(Component.class);
-                    String beanName = "".equals(component.name()) ? aClass.getName() : component.name();
+                    String beanName = IocUtil.getBeanName(aClass);
                     Object obj = ReflectionUtil.newInstance(aClass);
                     BEANS.put(beanName, obj);
                 }
