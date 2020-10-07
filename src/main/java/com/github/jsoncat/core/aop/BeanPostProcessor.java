@@ -1,4 +1,4 @@
-package com.github.jsoncat.core.ioc;
+package com.github.jsoncat.core.aop;
 
 
 /**

@@ -1,11 +1,14 @@
 package com.github.jsoncat.core.ioc;
 
 import com.github.jsoncat.annotation.ioc.Autowired;
+import com.github.jsoncat.annotation.ioc.Component;
 import com.github.jsoncat.annotation.ioc.Qualifier;
 import com.github.jsoncat.common.util.ReflectionUtil;
+import com.github.jsoncat.core.aop.BeanPostProcessor;
 import com.github.jsoncat.core.aop.JdkAopProxyBeanPostProcessor;
 import com.github.jsoncat.exception.CanNotDetermineTargetBeanException;
 import com.github.jsoncat.exception.InterfaceNotHaveImplementedClassException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -16,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author shuang.kou & tom
  * @createTime 2020年09月30日 07:51:00
  **/
+@Slf4j
 public class DependencyInjection {
 
     //二级缓存
@@ -28,9 +32,7 @@ public class DependencyInjection {
         Map<String, Object> beans = BeanFactory.BEANS;
         //创建好的bean都放入对象工厂
         if (beans.size() > 0) {
-            BeanFactory.BEANS.values().forEach(bean -> {
-                prepareBean(bean, packageName);
-            });
+            BeanFactory.BEANS.values().forEach(bean -> prepareBean(bean, packageName));
         }
     }
 
@@ -47,6 +49,10 @@ public class DependencyInjection {
                     //属性类型
                     Class<?> beanFieldClass = beanField.getType();
                     String beanName = beanFieldClass.getName();
+                    if (beanFieldClass.isAnnotationPresent(Component.class)) {
+                        Component component = beanFieldClass.getAnnotation(Component.class);
+                        beanName = "".equals(component.name()) ? beanFieldClass.getName() : component.name();
+                    }
                     boolean newSingleton = true;
                     Object beanFieldInstance = null;
                     if (SINGLETON_OBJECTS.containsKey(beanName)) {
@@ -58,7 +64,7 @@ public class DependencyInjection {
                             @SuppressWarnings("unchecked")
                             Set<Class<?>> subClasses = ReflectionUtil.getSubClass(packageName, (Class<Object>) beanFieldClass);
                             if (subClasses.size() == 0) {
-                                throw new InterfaceNotHaveImplementedClassException("interface does not have implemented class exception");
+                                throw new InterfaceNotHaveImplementedClassException(beanFieldClass.getName() + "is interface and do not have implemented class exception");
                             }
                             if (subClasses.size() == 1) {
                                 Class<?> aClass = subClasses.iterator().next();
@@ -74,7 +80,7 @@ public class DependencyInjection {
                             beanFieldInstance = BeanFactory.BEANS.get(beanName);
                         }
                         if (beanFieldInstance == null) {
-                            throw new CanNotDetermineTargetBeanException("can not determine target bean");
+                            throw new CanNotDetermineTargetBeanException("can not determine target bean of" + beanFieldClass.getName());
                         } else {
                             SINGLETON_OBJECTS.put(beanName, beanFieldInstance);
                         }

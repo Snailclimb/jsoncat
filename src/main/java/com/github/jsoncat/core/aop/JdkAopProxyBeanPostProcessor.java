@@ -1,7 +1,6 @@
 package com.github.jsoncat.core.aop;
 
 import com.github.jsoncat.common.util.ReflectionUtil;
-import com.github.jsoncat.core.ioc.BeanPostProcessor;
 import com.github.jsoncat.exception.CannotInitializaeConstructorException;
 
 import java.util.Objects;
