@@ -1,8 +1,8 @@
 package com.github.jsoncat.core.aop;
 
+import com.github.jsoncat.common.util.ReflectionUtil;
 import com.github.jsoncat.core.ioc.BeanPostProcessor;
 import com.github.jsoncat.exception.CannotInitializaeConstructorException;
-import org.reflections.Reflections;
 
 import java.util.Objects;
 import java.util.Set;
@@ -13,6 +13,11 @@ import java.util.Set;
  * @createTime 2020年10月6日10:20:26
  */
 public class JdkAopProxyBeanPostProcessor implements BeanPostProcessor {
+    private String packageName;
+
+    public JdkAopProxyBeanPostProcessor(String packageName) {
+        this.packageName = packageName;
+    }
 
     /**
      * 支持拦截器的执行顺序
@@ -22,8 +27,7 @@ public class JdkAopProxyBeanPostProcessor implements BeanPostProcessor {
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) {
         if (Objects.isNull(interceptorSets)) {
-            Reflections reflections = new Reflections(bean.getClass().getClassLoader());
-            interceptorSets = reflections.getSubTypesOf(Interceptor.class);
+            interceptorSets = ReflectionUtil.getSubClass(packageName, Interceptor.class);
         }
         //链式包装
         Object wrapperProxyBean = bean;

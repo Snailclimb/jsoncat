@@ -11,7 +11,7 @@ public class StudentController {
     private StudentService studentService;
 
     @GetMapping("/age")
-    public String getAge(){
-         return studentService.getAge("1");
+    public String getAge() {
+        return studentService.getAge("1");
     }
 }

@@ -4,10 +4,10 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-public class ProxyFactory implements InvocationHandler {
+public final class ProxyFactory implements InvocationHandler {
 
-    private Object target;
-    private Interceptor interceptor;
+    private final Object target;
+    private final Interceptor interceptor;
 
     private ProxyFactory(Object target, Interceptor interceptor) {
         this.target = target;

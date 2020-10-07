@@ -18,7 +18,7 @@ public class CircularDependencyController {
     private CircularDependencyC testC;
 
     @GetMapping("/test")
-    public void test(){
+    public void test() {
         testA.testA();
         testB.testB();
         testC.testC();

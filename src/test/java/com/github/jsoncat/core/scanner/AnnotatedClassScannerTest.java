@@ -14,7 +14,7 @@ class AnnotatedClassScannerTest {
     @Test
     void should_scan_the_annotated_class() {
         Set<Class<?>> annotatedClasses = ReflectionUtil.scanAnnotatedClass("com.github.demo", RestController.class);
-        assertEquals(2, annotatedClasses.size());
+        assertEquals(4, annotatedClasses.size());
     }
 
 }
