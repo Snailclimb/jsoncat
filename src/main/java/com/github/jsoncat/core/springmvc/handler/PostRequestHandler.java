@@ -38,7 +38,7 @@ public class PostRequestHandler implements RequestHandler {
         Method targetMethod = methodDetail.getMethod();
         String contentType = this.getContentType(fullHttpRequest.headers());
         // target method parameters.
-        // notice! you should convert it to array when pass into the executeMethod method
+        // notice! you should convert it to array when pass into the executeMethod()
         List<Object> targetMethodParams = new ArrayList<>();
         if (contentType.equals("application/json")) {
             String json = fullHttpRequest.content().toString(Charsets.toCharset(CharEncoding.UTF_8));
