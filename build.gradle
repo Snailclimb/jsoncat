@@ -23,6 +23,7 @@ def lombokVersion = '1.18.12'
 def junitVersion = 'junit-jupiter-api:5.6.1'
 def commonsCodecVersion = '1.14'
 def reflectionsVersion = '0.9.12'
+def cglibVersion = '3.3.0'
 
 dependencies {
     // json解析库：jackson
@@ -36,6 +37,8 @@ dependencies {
     compile "org.reflections:reflections:${reflectionsVersion}"
     // 编解码：commons-codec
     compile "commons-codec:commons-codec:${commonsCodecVersion}"
+    // 动态代理：cglib
+    compile "cglib:cglib:${cglibVersion}"
     // 语法糖：lombok
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"

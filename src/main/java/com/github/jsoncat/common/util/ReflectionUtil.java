@@ -1,8 +1,6 @@
 package com.github.jsoncat.common.util;
 
-import com.github.jsoncat.annotation.ioc.Component;
-import com.github.jsoncat.annotation.springmvc.RestController;
-import com.github.jsoncat.core.ioc.BeanFactory;
+import com.github.jsoncat.exception.CanNotInvokeTargetMethodException;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 import org.reflections.scanners.TypeAnnotationsScanner;
@@ -89,25 +87,14 @@ public class ReflectionUtil {
      * @param args   method parameters
      * @return the result of method execution
      */
-    public static Object executeMethod(Method method, Object... args) {
-        Object result = null;
+    public static Object executeTargetMethod(Object targetObject, Method method, Object... args) {
+        Object result;
         try {
-            // get the object that declared this method
-            Class<?> declaringClass = method.getDeclaringClass();
-            String beanName = "";
-            if (declaringClass.isAnnotationPresent(RestController.class)) {
-                beanName = declaringClass.getName();
-            }
-            if (declaringClass.isAnnotationPresent(Component.class)) {
-                Component component = declaringClass.getAnnotation(Component.class);
-                beanName = "".equals(component.name()) ? declaringClass.getName() : component.name();
-            }
-            Object targetObject = BeanFactory.BEANS.get(beanName);
             // invoke target method through reflection
             result = method.invoke(targetObject, args);
             log.info("invoke target method successfully ,result is: [{}]", result.toString());
         } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            throw new CanNotInvokeTargetMethodException(e.toString());
         }
         return result;
     }

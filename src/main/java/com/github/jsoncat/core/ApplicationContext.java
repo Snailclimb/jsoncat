@@ -1,9 +1,10 @@
 package com.github.jsoncat.core;
 
-import com.github.jsoncat.factory.ClassFactory;
-import com.github.jsoncat.core.springmvc.factory.RouteMethodMapper;
+import com.github.jsoncat.core.aop.InterceptorFactory;
 import com.github.jsoncat.core.ioc.BeanFactory;
 import com.github.jsoncat.core.ioc.DependencyInjection;
+import com.github.jsoncat.core.springmvc.factory.RouteMethodMapper;
+import com.github.jsoncat.factory.ClassFactory;
 
 /**
  * 将路由和方法对应起来
@@ -22,6 +23,8 @@ public final class ApplicationContext {
         RouteMethodMapper.loadRoutes();
         // Load beans managed by the ioc container
         BeanFactory.loadBeans();
+        // Load interceptors
+        InterceptorFactory.loadInterceptors(packageName);
         // Traverse all the beans in the ioc container and inject instances for all @Autowired annotated attributes.
         DependencyInjection.dependencyInjection(packageName);
 

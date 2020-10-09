@@ -4,7 +4,9 @@ import com.github.jsoncat.annotation.ioc.Autowired;
 import com.github.jsoncat.annotation.ioc.Qualifier;
 import com.github.jsoncat.common.util.ReflectionUtil;
 import com.github.jsoncat.core.aop.BeanPostProcessor;
-import com.github.jsoncat.core.aop.JdkAopProxyBeanPostProcessor;
+import com.github.jsoncat.core.aop.InterceptorFactory;
+import com.github.jsoncat.core.aop.cglib.CglibAopProxyBeanPostProcessor;
+import com.github.jsoncat.core.aop.jdk.JdkAopProxyBeanPostProcessor;
 import com.github.jsoncat.exception.CanNotDetermineTargetBeanException;
 import com.github.jsoncat.exception.InterfaceNotHaveImplementedClassException;
 import lombok.extern.slf4j.Slf4j;
@@ -55,6 +57,7 @@ public class DependencyInjection {
                         newSingleton = false;
                     }
                     if (beanFieldInstance == null) {
+                        beanFieldInstance = BeanFactory.BEANS.get(beanName);
                         if (beanFieldClass.isInterface()) {
                             @SuppressWarnings("unchecked")
                             Set<Class<?>> subClasses = ReflectionUtil.getSubClass(packageName, (Class<Object>) beanFieldClass);
@@ -71,21 +74,22 @@ public class DependencyInjection {
                                 beanFieldInstance = BeanFactory.BEANS.get(beanName);
                             }
 
-                        } else {
-                            beanFieldInstance = BeanFactory.BEANS.get(beanName);
                         }
                         if (beanFieldInstance == null) {
                             throw new CanNotDetermineTargetBeanException("can not determine target bean of" + beanFieldClass.getName());
-                        } else {
-                            SINGLETON_OBJECTS.put(beanName, beanFieldInstance);
                         }
+                        SINGLETON_OBJECTS.put(beanName, beanFieldInstance);
                     }
                     if (newSingleton) {
                         prepareBean(beanFieldInstance, packageName);
                     }
-                    //执行bean包装
-                    BeanPostProcessor beanPostProcessor = new JdkAopProxyBeanPostProcessor(packageName);
-                    beanFieldInstance = beanPostProcessor.postProcessAfterInitialization(beanFieldInstance, beanName);
+                    BeanPostProcessor beanPostProcessor;
+                    if (beanFieldClass.isInterface()) {
+                        beanPostProcessor = new JdkAopProxyBeanPostProcessor(InterceptorFactory.getInterceptors());
+                    } else {
+                        beanPostProcessor = new CglibAopProxyBeanPostProcessor(InterceptorFactory.getInterceptors());
+                    }
+                    beanFieldInstance = beanPostProcessor.postProcessAfterInitialization(beanFieldInstance);
                     ReflectionUtil.setField(beanInstance, beanField, beanFieldInstance);
                 }
             }
