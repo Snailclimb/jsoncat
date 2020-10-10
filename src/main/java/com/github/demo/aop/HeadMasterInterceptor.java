@@ -1,21 +1,26 @@
 package com.github.demo.aop;
 
 import com.github.jsoncat.core.aop.Interceptor;
-import com.github.jsoncat.core.aop.Invocation;
-import lombok.SneakyThrows;
+import com.github.jsoncat.core.aop.MethodInvocation;
 
-public class HeadMasterInterceptor implements Interceptor {
+public class HeadMasterInterceptor extends Interceptor {
 
     @Override
-    public boolean supports(String beanName) {
-        return beanName.equalsIgnoreCase(StudentService.class.getName());
+    public int getOrder() {
+        return 1;
     }
 
-    @SneakyThrows
     @Override
-    public Object intercept(Invocation invocation) {
-        Object result = invocation.proceed();
-        result = result + "，headMaster say : this student is very clever";
+    public boolean supports(Object bean) {
+        return bean instanceof StudentService;
+    }
+
+    @Override
+    public Object intercept(MethodInvocation methodInvocation) {
+        System.out.println(HeadMasterInterceptor.class.getSimpleName() + " before method：" + methodInvocation.getTargetMethod().getName());
+        Object result = methodInvocation.proceed();
+        result = result + " The HeadMaster said I was very clever.";
+        System.out.println(HeadMasterInterceptor.class.getSimpleName() + " after method：" + methodInvocation.getTargetMethod().getName());
         return result;
     }
 }

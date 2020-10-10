@@ -12,7 +12,7 @@ import java.util.Map;
  * @author shuang.kou
  * @createTime 2020年09月30日 00:14:00
  **/
-@Component
+@Component(name = "myUserService")
 public class UserService {
     private Integer id = 1;
 

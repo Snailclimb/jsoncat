@@ -3,9 +3,13 @@ package com.github.jsoncat.core.ioc;
 import com.github.jsoncat.annotation.ioc.Autowired;
 import com.github.jsoncat.annotation.ioc.Qualifier;
 import com.github.jsoncat.common.util.ReflectionUtil;
-import com.github.jsoncat.core.aop.JdkAopProxyBeanPostProcessor;
+import com.github.jsoncat.core.aop.BeanPostProcessor;
+import com.github.jsoncat.core.aop.InterceptorFactory;
+import com.github.jsoncat.core.aop.cglib.CglibAopProxyBeanPostProcessor;
+import com.github.jsoncat.core.aop.jdk.JdkAopProxyBeanPostProcessor;
 import com.github.jsoncat.exception.CanNotDetermineTargetBeanException;
 import com.github.jsoncat.exception.InterfaceNotHaveImplementedClassException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -16,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author shuang.kou & tom
  * @createTime 2020年09月30日 07:51:00
  **/
+@Slf4j
 public class DependencyInjection {
 
     //二级缓存
@@ -28,9 +33,7 @@ public class DependencyInjection {
         Map<String, Object> beans = BeanFactory.BEANS;
         //创建好的bean都放入对象工厂
         if (beans.size() > 0) {
-            BeanFactory.BEANS.values().forEach(bean -> {
-                prepareBean(bean, packageName);
-            });
+            BeanFactory.BEANS.values().forEach(bean -> prepareBean(bean, packageName));
         }
     }
 
@@ -46,7 +49,7 @@ public class DependencyInjection {
                 if (beanField.isAnnotationPresent(Autowired.class)) {
                     //属性类型
                     Class<?> beanFieldClass = beanField.getType();
-                    String beanName = beanFieldClass.getName();
+                    String beanName = IocUtil.getBeanName(beanFieldClass);
                     boolean newSingleton = true;
                     Object beanFieldInstance = null;
                     if (SINGLETON_OBJECTS.containsKey(beanName)) {
@@ -54,11 +57,12 @@ public class DependencyInjection {
                         newSingleton = false;
                     }
                     if (beanFieldInstance == null) {
+                        beanFieldInstance = BeanFactory.BEANS.get(beanName);
                         if (beanFieldClass.isInterface()) {
                             @SuppressWarnings("unchecked")
                             Set<Class<?>> subClasses = ReflectionUtil.getSubClass(packageName, (Class<Object>) beanFieldClass);
                             if (subClasses.size() == 0) {
-                                throw new InterfaceNotHaveImplementedClassException("interface does not have implemented class exception");
+                                throw new InterfaceNotHaveImplementedClassException(beanFieldClass.getName() + "is interface and do not have implemented class exception");
                             }
                             if (subClasses.size() == 1) {
                                 Class<?> aClass = subClasses.iterator().next();
@@ -70,21 +74,22 @@ public class DependencyInjection {
                                 beanFieldInstance = BeanFactory.BEANS.get(beanName);
                             }
 
-                        } else {
-                            beanFieldInstance = BeanFactory.BEANS.get(beanName);
                         }
                         if (beanFieldInstance == null) {
-                            throw new CanNotDetermineTargetBeanException("can not determine target bean");
-                        } else {
-                            SINGLETON_OBJECTS.put(beanName, beanFieldInstance);
+                            throw new CanNotDetermineTargetBeanException("can not determine target bean of" + beanFieldClass.getName());
                         }
+                        SINGLETON_OBJECTS.put(beanName, beanFieldInstance);
                     }
                     if (newSingleton) {
                         prepareBean(beanFieldInstance, packageName);
                     }
-                    //执行bean包装
-                    BeanPostProcessor beanPostProcessor = new JdkAopProxyBeanPostProcessor(packageName);
-                    beanFieldInstance = beanPostProcessor.postProcessAfterInitialization(beanFieldInstance, beanName);
+                    BeanPostProcessor beanPostProcessor;
+                    if (beanFieldClass.isInterface()) {
+                        beanPostProcessor = new JdkAopProxyBeanPostProcessor(InterceptorFactory.getInterceptors());
+                    } else {
+                        beanPostProcessor = new CglibAopProxyBeanPostProcessor(InterceptorFactory.getInterceptors());
+                    }
+                    beanFieldInstance = beanPostProcessor.postProcessAfterInitialization(beanFieldInstance);
                     ReflectionUtil.setField(beanInstance, beanField, beanFieldInstance);
                 }
             }

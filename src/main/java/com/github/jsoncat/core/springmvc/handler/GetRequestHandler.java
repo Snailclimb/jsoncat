@@ -2,10 +2,12 @@ package com.github.jsoncat.core.springmvc.handler;
 
 import com.github.jsoncat.common.util.ReflectionUtil;
 import com.github.jsoncat.common.util.UrlUtil;
-import com.github.jsoncat.entity.MethodDetail;
+import com.github.jsoncat.core.ioc.BeanFactory;
+import com.github.jsoncat.core.ioc.IocUtil;
 import com.github.jsoncat.core.springmvc.factory.ParameterResolverFactory;
 import com.github.jsoncat.core.springmvc.factory.RouteMethodMapper;
 import com.github.jsoncat.core.springmvc.resolver.ParameterResolver;
+import com.github.jsoncat.entity.MethodDetail;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +54,9 @@ public class GetRequestHandler implements RequestHandler {
                 targetMethodParams.add(param);
             }
         }
-        return ReflectionUtil.executeMethod(targetMethod, targetMethodParams.toArray());
+        String beanName = IocUtil.getBeanName(methodDetail.getMethod().getDeclaringClass());
+        Object targetObject = BeanFactory.BEANS.get(beanName);
+        return ReflectionUtil.executeTargetMethod(targetObject, targetMethod, targetMethodParams.toArray());
     }
 
 }

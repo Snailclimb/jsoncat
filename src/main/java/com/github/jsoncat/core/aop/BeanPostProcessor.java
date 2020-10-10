@@ -1,4 +1,4 @@
-package com.github.jsoncat.core.ioc;
+package com.github.jsoncat.core.aop;
 
 
 /**
@@ -8,7 +8,7 @@ package com.github.jsoncat.core.ioc;
  */
 public interface BeanPostProcessor {
 
-    default Object postProcessAfterInitialization(Object bean, String beanName) {
+    default Object postProcessAfterInitialization(Object bean) {
         return bean;
     }
 }

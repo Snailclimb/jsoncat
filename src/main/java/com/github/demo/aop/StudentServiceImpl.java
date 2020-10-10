@@ -6,7 +6,7 @@ import com.github.jsoncat.annotation.ioc.Component;
 public class StudentServiceImpl implements StudentService {
 
     @Override
-    public String getAge(String id) {
-        return "i am 12 years old";
+    public String getSummary(String id) {
+        return "i am a good student!";
     }
 }

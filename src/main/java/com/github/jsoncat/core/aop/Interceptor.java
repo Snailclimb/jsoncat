@@ -1,19 +1,19 @@
 package com.github.jsoncat.core.aop;
 
 /**
- * @author tom
- * aop 拦截器
+ * @author tom & shuang.kou
  * @createTime 2020年10月6日10:20:26
  */
-public interface Interceptor {
 
-    default boolean supports(String beanName) {
-        return false;
+public abstract class Interceptor {
+
+    public int getOrder() {
+        return -1;
     }
 
-    /**
-     * @param invocation
-     * @return
-     */
-    Object intercept(Invocation invocation);
+    public boolean supports(Object bean) {
+        return true;
+    }
+
+    public abstract Object intercept(MethodInvocation methodInvocation);
 }

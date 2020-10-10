@@ -10,8 +10,8 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-    @GetMapping("/age")
+    @GetMapping("/summary")
     public String getAge() {
-        return studentService.getAge("1");
+        return studentService.getSummary("1");
     }
 }
