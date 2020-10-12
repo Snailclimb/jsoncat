@@ -1,4 +1,6 @@
 > 本项目已经同步到码云，地址：[https://gitee.com/SnailClimb/jsoncat](https://gitee.com/SnailClimb/jsoncat)。
+>
+> 配套教程正在我的公众号“ **JavaGuide**”上更新，公众号后台回复“**jsoncat**”即可获取所有教程。
 
 原创开源不易，觉得不错的话，欢迎给良心作者 1 个 star 鼓励一下！
 
@@ -63,7 +65,6 @@
 - [x] 支持全局拦截器（拦截所有 bean）
 - [x] 支持配置多个拦截器
 - [x] 支持自定义拦截器的执行顺序
-- [ ] 
 
 #### 异常处理
 
@@ -183,3 +184,4 @@ public class UserController {
 **当指定的参数未传递时：**
 
 ![](media/images/错误处理-指定参数未传递.png)
+
