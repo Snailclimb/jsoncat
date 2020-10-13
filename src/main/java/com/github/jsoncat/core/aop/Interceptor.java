@@ -12,7 +12,7 @@ public abstract class Interceptor {
     }
 
     public boolean supports(Object bean) {
-        return true;
+        return false;
     }
 
     public abstract Object intercept(MethodInvocation methodInvocation);
