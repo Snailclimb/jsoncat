@@ -1,7 +1,7 @@
 package com.github.jsoncat.core.aop;
 
 import com.github.jsoncat.common.util.ReflectionUtil;
-import com.github.jsoncat.exception.CannotInitializaeConstructorException;
+import com.github.jsoncat.exception.CannotInitializeConstructorException;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -23,7 +23,7 @@ public class InterceptorFactory {
             try {
                 interceptors.add(subClass.newInstance());
             } catch (InstantiationException | IllegalAccessException e) {
-                throw new CannotInitializaeConstructorException("not init constructor , the interceptor name :" + subClass.getSimpleName());
+                throw new CannotInitializeConstructorException("not init constructor , the interceptor name :" + subClass.getSimpleName());
             }
         }
         interceptors = interceptors.stream().sorted(Comparator.comparing(Interceptor::getOrder)).collect(Collectors.toList());
