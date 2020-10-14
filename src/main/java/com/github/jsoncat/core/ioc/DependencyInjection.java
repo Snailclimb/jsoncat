@@ -4,9 +4,7 @@ import com.github.jsoncat.annotation.ioc.Autowired;
 import com.github.jsoncat.annotation.ioc.Qualifier;
 import com.github.jsoncat.common.util.ReflectionUtil;
 import com.github.jsoncat.core.aop.BeanPostProcessor;
-import com.github.jsoncat.core.aop.InterceptorFactory;
-import com.github.jsoncat.core.aop.cglib.CglibAopProxyBeanPostProcessor;
-import com.github.jsoncat.core.aop.jdk.JdkAopProxyBeanPostProcessor;
+import com.github.jsoncat.core.aop.BeanPostProcessorFactory;
 import com.github.jsoncat.exception.CanNotDetermineTargetBeanException;
 import com.github.jsoncat.exception.InterfaceNotHaveImplementedClassException;
 import lombok.extern.slf4j.Slf4j;
@@ -83,12 +81,7 @@ public class DependencyInjection {
                     if (newSingleton) {
                         prepareBean(beanFieldInstance, packageName);
                     }
-                    BeanPostProcessor beanPostProcessor;
-                    if (beanFieldClass.isInterface()) {
-                        beanPostProcessor = new JdkAopProxyBeanPostProcessor(InterceptorFactory.getInterceptors());
-                    } else {
-                        beanPostProcessor = new CglibAopProxyBeanPostProcessor(InterceptorFactory.getInterceptors());
-                    }
+                    BeanPostProcessor beanPostProcessor = BeanPostProcessorFactory.getBeanPostProcessor(beanFieldClass);
                     beanFieldInstance = beanPostProcessor.postProcessAfterInitialization(beanFieldInstance);
                     ReflectionUtil.setField(beanInstance, beanField, beanFieldInstance);
                 }
