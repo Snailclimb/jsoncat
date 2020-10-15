@@ -13,7 +13,7 @@ import java.util.Map;
  * @createTime 2020年09月30日 00:14:00
  **/
 @Component(name = "myUserService")
-public class UserService implements IUserService {
+public class UserService  {
     private Integer id = 1;
 
     private final Map<Integer, User> users = new HashMap<Integer, User>() {
