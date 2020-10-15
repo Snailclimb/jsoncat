@@ -1,4 +1,4 @@
-package com.github.jsoncat.entity;
+package com.github.jsoncat.core.springmvc.entity;
 
 import com.github.jsoncat.common.util.UrlUtil;
 import lombok.AllArgsConstructor;

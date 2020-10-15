@@ -7,7 +7,7 @@ import com.github.jsoncat.core.ioc.IocUtil;
 import com.github.jsoncat.core.springmvc.factory.ParameterResolverFactory;
 import com.github.jsoncat.core.springmvc.factory.RouteMethodMapper;
 import com.github.jsoncat.core.springmvc.resolver.ParameterResolver;
-import com.github.jsoncat.entity.MethodDetail;
+import com.github.jsoncat.core.springmvc.entity.MethodDetail;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
 import lombok.extern.slf4j.Slf4j;

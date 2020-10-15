@@ -4,7 +4,7 @@ import com.github.jsoncat.annotation.springmvc.GetMapping;
 import com.github.jsoncat.annotation.springmvc.PostMapping;
 import com.github.jsoncat.annotation.springmvc.RestController;
 import com.github.jsoncat.common.util.UrlUtil;
-import com.github.jsoncat.entity.MethodDetail;
+import com.github.jsoncat.core.springmvc.entity.MethodDetail;
 import com.github.jsoncat.factory.ClassFactory;
 import io.netty.handler.codec.http.HttpMethod;
 

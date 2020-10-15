@@ -1,6 +1,5 @@
 package com.github.demo.aop;
 
-import com.github.jsoncat.annotation.aop.Aspect;
 import com.github.jsoncat.core.aop.intercept.Interceptor;
 import com.github.jsoncat.core.aop.intercept.MethodInvocation;
 
@@ -8,7 +7,6 @@ import com.github.jsoncat.core.aop.intercept.MethodInvocation;
  * @author shuang.kou
  * @createTime 2020年10月09日 21:28:00
  **/
-@Aspect
 public class GlobalInterceptor extends Interceptor {
     @Override
     public Object intercept(MethodInvocation methodInvocation) {

@@ -1,10 +1,8 @@
 package com.github.demo.aop;
 
-import com.github.jsoncat.annotation.aop.Aspect;
 import com.github.jsoncat.core.aop.intercept.Interceptor;
 import com.github.jsoncat.core.aop.intercept.MethodInvocation;
 
-@Aspect
 public class TeacherInterceptor extends Interceptor {
     @Override
     public int getOrder() {

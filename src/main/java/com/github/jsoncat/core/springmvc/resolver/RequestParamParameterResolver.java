@@ -2,7 +2,7 @@ package com.github.jsoncat.core.springmvc.resolver;
 
 import com.github.jsoncat.annotation.springmvc.RequestParam;
 import com.github.jsoncat.common.util.ObjectUtil;
-import com.github.jsoncat.entity.MethodDetail;
+import com.github.jsoncat.core.springmvc.entity.MethodDetail;
 
 import java.lang.reflect.Parameter;
 
