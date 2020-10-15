@@ -17,7 +17,7 @@ import java.util.List;
 @RestController("/user")
 public class UserController {
     @Autowired
-    public IUserService userService;
+    public UserService userService;
 
     @GetMapping
     public User get(@RequestParam("name") String name, @RequestParam("des") String des, @RequestParam("age") Integer age) {
