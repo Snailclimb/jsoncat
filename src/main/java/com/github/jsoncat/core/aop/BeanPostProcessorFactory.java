@@ -5,8 +5,8 @@ import com.github.jsoncat.core.aop.jdk.JdkAopProxyBeanPostProcessor;
 
 public class BeanPostProcessorFactory {
 
-    public static BeanPostProcessor getBeanPostProcessor(Object bean) {
-        if (bean.getClass().getInterfaces().length > 0) {
+    public static BeanPostProcessor getBeanPostProcessor(Class<?> beanClass) {
+        if (beanClass.isInterface() || beanClass.getInterfaces().length > 0) {
             return new JdkAopProxyBeanPostProcessor();
         } else {
             return new CglibAopProxyBeanPostProcessor();
