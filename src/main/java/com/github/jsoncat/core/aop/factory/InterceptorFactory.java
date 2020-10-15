@@ -15,6 +15,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
+ * 存放所有拦截器的工厂类
+ *
  * @author shuang.kou
  * @createTime 2020年10月09日 22:24:00
  **/
@@ -22,16 +24,19 @@ public class InterceptorFactory {
     private static List<Interceptor> interceptors = new ArrayList<>();
 
     public static void loadInterceptors(String packageName) {
-        // get the implementations of the Interceptor in the specified package
-        Set<Class<? extends Interceptor>> subClasses = ReflectionUtil.getSubClass(packageName, Interceptor.class);
-        subClasses.forEach(subClass -> {
+        // 获取指定包中实现了 Interceptor 接口的类
+        Set<Class<? extends Interceptor>> interceptorClasses = ReflectionUtil.getSubClass(packageName, Interceptor.class);
+        // 获取被 @Aspect 标记的类
+        Set<Class<?>> aspects = ClassFactory.CLASSES.get(Aspect.class);
+        // 遍历所有拦截器类
+        interceptorClasses.forEach(interceptorClass -> {
             try {
-                interceptors.add(subClass.newInstance());
+                interceptors.add(interceptorClass.newInstance());
             } catch (InstantiationException | IllegalAccessException e) {
-                throw new CannotInitializeConstructorException("not init constructor , the interceptor name :" + subClass.getSimpleName());
+                throw new CannotInitializeConstructorException("not init constructor , the interceptor name :" + interceptorClass.getSimpleName());
             }
         });
-        ClassFactory.CLASSES.get(Aspect.class).forEach(aClass -> {
+        aspects.forEach(aClass -> {
             Object obj = ReflectionUtil.newInstance(aClass);
             Interceptor interceptor = new InternallyAspectInterceptor(obj);
             if (aClass.isAnnotationPresent(Order.class)) {
@@ -40,6 +45,7 @@ public class InterceptorFactory {
             }
             interceptors.add(interceptor);
         });
+        // 根据 order 为拦截器排序
         interceptors = interceptors.stream().sorted(Comparator.comparing(Interceptor::getOrder)).collect(Collectors.toList());
     }
 

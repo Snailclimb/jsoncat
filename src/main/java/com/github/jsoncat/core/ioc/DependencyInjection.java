@@ -81,7 +81,7 @@ public class DependencyInjection {
                     if (newSingleton) {
                         prepareBean(beanFieldInstance, packageName);
                     }
-                    BeanPostProcessor beanPostProcessor = BeanPostProcessorFactory.getBeanPostProcessor(beanFieldClass);
+                    BeanPostProcessor beanPostProcessor = BeanPostProcessorFactory.get(beanFieldClass);
                     beanFieldInstance = beanPostProcessor.postProcessAfterInitialization(beanFieldInstance);
                     ReflectionUtil.setField(beanInstance, beanField, beanFieldInstance);
                 }

@@ -11,7 +11,7 @@ public class JdkAopProxyBeanPostProcessor extends AbstractAopProxyBeanPostProces
 
 
     @Override
-    public Object wrapperBean(Object target, Interceptor interceptor) {
+    public Object wrapBean(Object target, Interceptor interceptor) {
         return JdkAspectProxy.wrap(target, interceptor);
     }
 }
