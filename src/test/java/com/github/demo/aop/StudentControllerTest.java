@@ -1,7 +1,6 @@
 package com.github.demo.aop;
 
 import com.github.demo.TestConfig;
-import com.github.jsoncat.serialize.impl.JacksonSerializer;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;

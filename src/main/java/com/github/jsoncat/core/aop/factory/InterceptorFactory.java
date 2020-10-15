@@ -1,7 +1,12 @@
-package com.github.jsoncat.core.aop;
+package com.github.jsoncat.core.aop.factory;
 
+import com.github.jsoncat.annotation.aop.Aspect;
+import com.github.jsoncat.annotation.aop.Order;
 import com.github.jsoncat.common.util.ReflectionUtil;
+import com.github.jsoncat.core.aop.intercept.Interceptor;
+import com.github.jsoncat.core.aop.intercept.InternallyAspectInterceptor;
 import com.github.jsoncat.exception.CannotInitializeConstructorException;
+import com.github.jsoncat.factory.ClassFactory;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -19,13 +24,22 @@ public class InterceptorFactory {
     public static void loadInterceptors(String packageName) {
         // get the implementations of the Interceptor in the specified package
         Set<Class<? extends Interceptor>> subClasses = ReflectionUtil.getSubClass(packageName, Interceptor.class);
-        for (Class<? extends Interceptor> subClass : subClasses) {
+        subClasses.forEach(subClass -> {
             try {
                 interceptors.add(subClass.newInstance());
             } catch (InstantiationException | IllegalAccessException e) {
                 throw new CannotInitializeConstructorException("not init constructor , the interceptor name :" + subClass.getSimpleName());
             }
-        }
+        });
+        ClassFactory.CLASSES.get(Aspect.class).forEach(aClass -> {
+            Object obj = ReflectionUtil.newInstance(aClass);
+            Interceptor interceptor = new InternallyAspectInterceptor(obj);
+            if (aClass.isAnnotationPresent(Order.class)) {
+                Order order = aClass.getAnnotation(Order.class);
+                interceptor.setOrder(order.value());
+            }
+            interceptors.add(interceptor);
+        });
         interceptors = interceptors.stream().sorted(Comparator.comparing(Interceptor::getOrder)).collect(Collectors.toList());
     }
 

@@ -1,6 +1,6 @@
 package com.github.jsoncat.core;
 
-import com.github.jsoncat.core.aop.InterceptorFactory;
+import com.github.jsoncat.core.aop.factory.InterceptorFactory;
 import com.github.jsoncat.core.ioc.BeanFactory;
 import com.github.jsoncat.core.ioc.DependencyInjection;
 import com.github.jsoncat.core.springmvc.factory.RouteMethodMapper;

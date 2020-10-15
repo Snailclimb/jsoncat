@@ -2,8 +2,7 @@ package com.github.jsoncat.core.aop.util;
 
 /**
  * @author tom
- * 习惯了aspect表达式的写法，偷懒直接把spring aop里面解析表达式的类拿过来直接用
- * {@link org.springframework.util.PatternMatchUtils} class
+ * 习惯了aspect表达式的写法，偷懒直接把spring aop(PatternMatchUtils.java)里面解析表达式的类拿过来直接用
  * @createTime 2020年10月7日
  */
 public class PatternMatchUtils {

@@ -1,4 +1,4 @@
-package com.github.jsoncat.core.aop;
+package com.github.jsoncat.core.aop.intercept;
 
 import com.github.jsoncat.common.util.ReflectionUtil;
 import lombok.AllArgsConstructor;

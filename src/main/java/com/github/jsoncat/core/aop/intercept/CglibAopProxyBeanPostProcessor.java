@@ -1,7 +1,6 @@
-package com.github.jsoncat.core.aop.cglib;
+package com.github.jsoncat.core.aop.intercept;
 
-import com.github.jsoncat.core.aop.AbstractAopProxyBeanPostProcessor;
-import com.github.jsoncat.core.aop.Interceptor;
+import com.github.jsoncat.core.aop.proxy.CglibAspectProxy;
 
 /**
  * @author tom
@@ -12,7 +11,7 @@ public class CglibAopProxyBeanPostProcessor extends AbstractAopProxyBeanPostProc
 
     @Override
     public Object wrapperBean(Object target, Interceptor interceptor) {
-        return CglibMethodInterceptor.wrap(target, interceptor);
+        return CglibAspectProxy.wrap(target, interceptor);
     }
 
 }

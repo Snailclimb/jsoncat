@@ -1,4 +1,4 @@
-package com.github.jsoncat.core.aop;
+package com.github.jsoncat.core.aop.intercept;
 
 import com.github.jsoncat.annotation.aop.After;
 import com.github.jsoncat.annotation.aop.Before;
@@ -16,13 +16,10 @@ import java.util.Objects;
 
 public class InternallyAspectInterceptor extends Interceptor {
 
-    private Object adviceBean;
-
+    private final Object adviceBean;
     private final HashSet<String> expressionUrls = new HashSet<>();
-
-    private final List<Method> beforeMethod = new ArrayList<>();
-
-    private final List<Method> afterMethod = new ArrayList<>();
+    private final List<Method> beforeMethods = new ArrayList<>();
+    private final List<Method> afterMethods = new ArrayList<>();
 
     public InternallyAspectInterceptor(Object adviceBean) {
         this.adviceBean = adviceBean;
@@ -37,31 +34,27 @@ public class InternallyAspectInterceptor extends Interceptor {
             }
             Before before = method.getAnnotation(Before.class);
             if (!Objects.isNull(before)) {
-                beforeMethod.add(method);
+                beforeMethods.add(method);
             }
             After after = method.getAnnotation(After.class);
             if (!Objects.isNull(after)) {
-                afterMethod.add(method);
+                afterMethods.add(method);
             }
         }
     }
 
     @Override
     public boolean supports(Object bean) {
-        return expressionUrls.stream().anyMatch(url -> PatternMatchUtils.simpleMatch(url, bean.getClass().getName())) && (!beforeMethod.isEmpty() || !afterMethod.isEmpty());
+        return expressionUrls.stream().anyMatch(url -> PatternMatchUtils.simpleMatch(url, bean.getClass().getName())) && (!beforeMethods.isEmpty() || !afterMethods.isEmpty());
     }
 
-    /**
-     * @param methodInvocation
-     * @return
-     */
     @Override
     public Object intercept(MethodInvocation methodInvocation) {
         JoinPoint joinPoint = new JoinPointImpl(adviceBean, methodInvocation.getTargetObject(),
                 methodInvocation.getArgs());
-        beforeMethod.forEach(method -> ReflectionUtil.executeTargetMethodNoResult(adviceBean, method, joinPoint));
+        beforeMethods.forEach(method -> ReflectionUtil.executeTargetMethodNoResult(adviceBean, method, joinPoint));
         Object result = methodInvocation.proceed();
-        afterMethod.forEach(method -> ReflectionUtil.executeTargetMethodNoResult(adviceBean, method, result, joinPoint));
+        afterMethods.forEach(method -> ReflectionUtil.executeTargetMethodNoResult(adviceBean, method, result, joinPoint));
         return result;
     }
 }

@@ -1,7 +1,8 @@
-package com.github.jsoncat.core.aop;
+package com.github.jsoncat.core.aop.factory;
 
-import com.github.jsoncat.core.aop.cglib.CglibAopProxyBeanPostProcessor;
-import com.github.jsoncat.core.aop.jdk.JdkAopProxyBeanPostProcessor;
+import com.github.jsoncat.core.aop.intercept.BeanPostProcessor;
+import com.github.jsoncat.core.aop.intercept.CglibAopProxyBeanPostProcessor;
+import com.github.jsoncat.core.aop.intercept.JdkAopProxyBeanPostProcessor;
 
 public class BeanPostProcessorFactory {
 

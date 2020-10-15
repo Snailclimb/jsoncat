@@ -1,7 +1,6 @@
-package com.github.jsoncat.core.aop.jdk;
+package com.github.jsoncat.core.aop.intercept;
 
-import com.github.jsoncat.core.aop.AbstractAopProxyBeanPostProcessor;
-import com.github.jsoncat.core.aop.Interceptor;
+import com.github.jsoncat.core.aop.proxy.JdkAspectProxy;
 
 /**
  * @author tom
@@ -13,6 +12,6 @@ public class JdkAopProxyBeanPostProcessor extends AbstractAopProxyBeanPostProces
 
     @Override
     public Object wrapperBean(Object target, Interceptor interceptor) {
-        return JdkInvocationHandler.wrap(target, interceptor);
+        return JdkAspectProxy.wrap(target, interceptor);
     }
 }

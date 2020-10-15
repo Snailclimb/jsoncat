@@ -18,12 +18,11 @@ public class ClassFactory {
     public static final Map<Class<? extends Annotation>, Set<Class<?>>> CLASSES = new ConcurrentHashMap<>();
 
     public static void loadClass(String packageName) {
-        Set<Class<?>> restControllerSets = ReflectionUtil.scanAnnotatedClass(packageName, RestController.class);
-        Set<Class<?>> componentSets = ReflectionUtil.scanAnnotatedClass(packageName, Component.class);
-        Set<Class<?>> aspectSets = ReflectionUtil.scanAnnotatedClass(packageName, Aspect.class);
-        CLASSES.put(RestController.class, restControllerSets);
-        CLASSES.put(Component.class, componentSets);
-        CLASSES.put(Aspect.class, aspectSets);
+        Set<Class<?>> restControllers = ReflectionUtil.scanAnnotatedClass(packageName, RestController.class);
+        Set<Class<?>> components = ReflectionUtil.scanAnnotatedClass(packageName, Component.class);
+        Set<Class<?>> aspects = ReflectionUtil.scanAnnotatedClass(packageName, Aspect.class);
+        CLASSES.put(RestController.class, restControllers);
+        CLASSES.put(Component.class, components);
+        CLASSES.put(Aspect.class, aspects);
     }
-
 }

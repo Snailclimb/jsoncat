@@ -1,8 +1,10 @@
 package com.github.demo.aop;
 
-import com.github.jsoncat.core.aop.Interceptor;
-import com.github.jsoncat.core.aop.MethodInvocation;
+import com.github.jsoncat.annotation.aop.Aspect;
+import com.github.jsoncat.core.aop.intercept.Interceptor;
+import com.github.jsoncat.core.aop.intercept.MethodInvocation;
 
+@Aspect
 public class HeadMasterInterceptor extends Interceptor {
 
     @Override
