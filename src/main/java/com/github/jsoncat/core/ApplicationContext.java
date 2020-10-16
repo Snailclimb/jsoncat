@@ -1,6 +1,7 @@
 package com.github.jsoncat.core;
 
 import com.github.jsoncat.annotation.boot.ComponentScan;
+import com.github.jsoncat.common.Banner;
 import com.github.jsoncat.core.aop.factory.InterceptorFactory;
 import com.github.jsoncat.core.boot.ApplicationRunner;
 import com.github.jsoncat.core.ioc.BeanFactory;
@@ -25,6 +26,9 @@ public final class ApplicationContext {
 
 
     public void run(Class<?> applicationClass) {
+        //print banner
+        Banner.printBanner();
+        //analyse package
         String[] packageNames = analysisPackageNames(applicationClass);
         // Load classes with custom annotation
         ClassFactory.loadClass(packageNames);
