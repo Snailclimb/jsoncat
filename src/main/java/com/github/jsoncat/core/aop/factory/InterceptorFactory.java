@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class InterceptorFactory {
     private static List<Interceptor> interceptors = new ArrayList<>();
 
-    public static void loadInterceptors(String packageName) {
+    public static void loadInterceptors(String[] packageName) {
         // 获取指定包中实现了 Interceptor 接口的类
         Set<Class<? extends Interceptor>> interceptorClasses = ReflectionUtil.getSubClass(packageName, Interceptor.class);
         // 获取被 @Aspect 标记的类
