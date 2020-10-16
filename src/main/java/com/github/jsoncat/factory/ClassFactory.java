@@ -17,7 +17,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ClassFactory {
     public static final Map<Class<? extends Annotation>, Set<Class<?>>> CLASSES = new ConcurrentHashMap<>();
 
-    public static void loadClass(String packageName) {
+    public static void loadClass(String[] packageName) {
+
         Set<Class<?>> restControllers = ReflectionUtil.scanAnnotatedClass(packageName, RestController.class);
         Set<Class<?>> components = ReflectionUtil.scanAnnotatedClass(packageName, Component.class);
         Set<Class<?>> aspects = ReflectionUtil.scanAnnotatedClass(packageName, Aspect.class);

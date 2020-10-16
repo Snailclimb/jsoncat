@@ -1,19 +1,23 @@
 package com.github.jsoncat;
 
-import com.github.jsoncat.common.Banner;
+import com.github.jsoncat.annotation.boot.ComponentScan;
+import com.github.jsoncat.annotation.boot.SpringBootApplication;
 import com.github.jsoncat.core.ApplicationContext;
-import com.github.jsoncat.server.HttpServer;
 
 /**
  * @author shuang.kou
  * @createTime 2020年09月23日 17:30:00
  **/
+@SpringBootApplication
+@ComponentScan(value = {"com.github.demo.aop", "com.github.demo"})
 public class JsonCatApplication {
+
     public static void main(String[] args) {
-        Banner.printBanner();
+        JsonCatApplication.run(JsonCatApplication.class, args);
+    }
+
+    public static void run(Class<?> applicationClass, String... arg) {
         ApplicationContext applicationContext = ApplicationContext.getApplicationContext();
-        applicationContext.run("com.github.demo");
-        HttpServer httpServer = new HttpServer();
-        httpServer.start();
+        applicationContext.run(applicationClass);
     }
 }
