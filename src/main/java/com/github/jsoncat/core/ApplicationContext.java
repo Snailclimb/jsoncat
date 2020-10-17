@@ -4,16 +4,22 @@ import com.github.jsoncat.annotation.boot.ComponentScan;
 import com.github.jsoncat.common.Banner;
 import com.github.jsoncat.core.aop.factory.InterceptorFactory;
 import com.github.jsoncat.core.boot.ApplicationRunner;
+import com.github.jsoncat.core.config.Configuration;
+import com.github.jsoncat.core.config.ConfigurationManager;
 import com.github.jsoncat.core.ioc.BeanFactory;
 import com.github.jsoncat.core.ioc.DependencyInjection;
 import com.github.jsoncat.core.springmvc.factory.RouteMethodMapper;
 import com.github.jsoncat.factory.ClassFactory;
 import com.github.jsoncat.server.HttpServer;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Objects;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * 将路由和方法对应起来
@@ -40,6 +46,8 @@ public final class ApplicationContext {
         InterceptorFactory.loadInterceptors(packageNames);
         // Traverse all the beans in the ioc container and inject instances for all @Autowired annotated attributes.
         DependencyInjection.dependencyInjection(packageNames);
+        //load configuration
+        loadResources(applicationClass);
         // Perform some callback events
         callRunners();
     }
@@ -66,4 +74,26 @@ public final class ApplicationContext {
         }
     }
 
+
+    private void loadResources(Class<?> applicationClass) {
+        URL url = applicationClass.getClassLoader().getResource("");
+        if (!Objects.isNull(url)) {
+            try {
+                List<Path> filePaths = new ArrayList<>();
+                Path path = Paths.get(url.toURI());
+                Stream<Path> stream = Files.list(path);
+                Iterator<Path> ite = stream.iterator();
+                while (ite.hasNext()) {
+                    Path p = ite.next();
+                    if (p.getFileName().toString().startsWith(Configuration.APPLICATION_NAME)) {
+                        filePaths.add(p);
+                    }
+                }
+                ConfigurationManager configuration = BeanFactory.getBean(ConfigurationManager.class);
+                configuration.loadResources(filePaths);
+            } catch (URISyntaxException | IOException ignored) {
+
+            }
+        }
+    }
 }
