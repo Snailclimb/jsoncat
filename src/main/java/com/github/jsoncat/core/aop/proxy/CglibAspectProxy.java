@@ -1,7 +1,7 @@
-package com.github.jsoncat.core.aop.cglib;
+package com.github.jsoncat.core.aop.proxy;
 
-import com.github.jsoncat.core.aop.Interceptor;
-import com.github.jsoncat.core.aop.MethodInvocation;
+import com.github.jsoncat.core.aop.intercept.Interceptor;
+import com.github.jsoncat.core.aop.intercept.MethodInvocation;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -9,23 +9,29 @@ import net.sf.cglib.proxy.MethodProxy;
 import java.lang.reflect.Method;
 
 /**
- * @author shuang.kou
+ * @author shuang.kou & tom
  * @createTime 2020年10月09日 21:43:00
  **/
-public class CglibMethodInterceptor implements MethodInterceptor {
+public class CglibAspectProxy implements MethodInterceptor {
     private final Object target;
     private final Interceptor interceptor;
 
-    public CglibMethodInterceptor(Object target, Interceptor interceptor) {
+    public CglibAspectProxy(Object target, Interceptor interceptor) {
         this.target = target;
         this.interceptor = interceptor;
     }
 
     public static Object wrap(Object target, Interceptor interceptor) {
+        Class<?> rootClass = target.getClass();
+        Class<?> proxySuperClass = rootClass;
+        // cglib 多级代理处理
+        if (target.getClass().getName().contains("$$")) {
+            proxySuperClass = rootClass.getSuperclass();
+        }
         Enhancer enhancer = new Enhancer();
         enhancer.setClassLoader(target.getClass().getClassLoader());
-        enhancer.setSuperclass(target.getClass());
-        enhancer.setCallback(new CglibMethodInterceptor(target, interceptor));
+        enhancer.setSuperclass(proxySuperClass);
+        enhancer.setCallback(new CglibAspectProxy(target, interceptor));
         return enhancer.create();
     }
 

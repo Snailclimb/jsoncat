@@ -5,9 +5,9 @@ package com.github.jsoncat.exception;
  * 不能初始化构造函数
  * @createTime 2020年10月6日10:20:26
  */
-public class CannotInitializaeConstructorException extends RuntimeException {
+public class CannotInitializeConstructorException extends RuntimeException {
 
-    public CannotInitializaeConstructorException(String message) {
+    public CannotInitializeConstructorException(String message) {
         super(message);
     }
 }

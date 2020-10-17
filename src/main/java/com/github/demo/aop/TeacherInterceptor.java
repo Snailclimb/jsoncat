@@ -1,7 +1,7 @@
 package com.github.demo.aop;
 
-import com.github.jsoncat.core.aop.Interceptor;
-import com.github.jsoncat.core.aop.MethodInvocation;
+import com.github.jsoncat.core.aop.intercept.Interceptor;
+import com.github.jsoncat.core.aop.intercept.MethodInvocation;
 
 public class TeacherInterceptor extends Interceptor {
     @Override
