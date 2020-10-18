@@ -3,6 +3,8 @@ package com.github.jsoncat.core.ioc;
 import com.github.jsoncat.annotation.ioc.Component;
 import com.github.jsoncat.annotation.springmvc.RestController;
 import com.github.jsoncat.common.util.ReflectionUtil;
+import com.github.jsoncat.core.config.ConfigurationFactory;
+import com.github.jsoncat.core.config.ConfigurationManager;
 import com.github.jsoncat.exception.DoGetBeanException;
 import com.github.jsoncat.factory.ClassFactory;
 
@@ -29,8 +31,20 @@ public final class BeanFactory {
             Object obj = ReflectionUtil.newInstance(aClass);
             BEANS.put(aClass.getName(), obj);
         });
+        BEANS.put(ConfigurationManager.class.getName(), new ConfigurationManager(ConfigurationFactory.getConfig()));
     }
 
+    public static <T> T getBean(Class<T> type) {
+        String[] beanNames = getBeanNamesForType(type);
+        if (beanNames.length == 0) {
+            throw new DoGetBeanException("not fount bean implement，the bean :" + type.getName());
+        }
+        Object beanInstance = BEANS.get(beanNames[0]);
+        if (!type.isInstance(beanInstance)) {
+            throw new DoGetBeanException("not fount bean implement，the bean :" + type.getName());
+        }
+        return type.cast(beanInstance);
+    }
 
     public static <T> Map<String, T> getBeansOfType(Class<T> type) {
         Map<String, T> result = new HashMap<>();
