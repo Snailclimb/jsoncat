@@ -29,7 +29,7 @@ public class ReflectionUtil {
     public static Set<Class<?>> scanAnnotatedClass(String packageName, Class<? extends Annotation> annotation) {
         Reflections reflections = new Reflections(packageName, new TypeAnnotationsScanner());
         Set<Class<?>> annotatedClass = reflections.getTypesAnnotatedWith(annotation, true);
-        log.info("The number of class Annotated with  @RestController :[{}]", annotatedClass.size());
+        log.info("The number of class Annotated with @" + annotation.getSimpleName() + ":[{}]", annotatedClass.size());
         return annotatedClass;
     }
 
@@ -37,13 +37,13 @@ public class ReflectionUtil {
      * scan the classes marked by the specified annotation in the specified package
      *
      * @param packageNames specified package name
-     * @param annotation  specified annotation
+     * @param annotation   specified annotation
      * @return the classes marked by the specified annotation in the specified package
      */
     public static Set<Class<?>> scanAnnotatedClass(String[] packageNames, Class<? extends Annotation> annotation) {
         Reflections reflections = new Reflections(packageNames, new TypeAnnotationsScanner());
         Set<Class<?>> annotatedClass = reflections.getTypesAnnotatedWith(annotation, true);
-        log.info("The number of class Annotated with  @RestController :[{}]", annotatedClass.size());
+        log.info("The number of class Annotated with @" + annotation.getSimpleName() + ":[{}]", annotatedClass.size());
         return annotatedClass;
     }
 
@@ -63,7 +63,7 @@ public class ReflectionUtil {
     /**
      * Get the implementation class of the interface
      *
-     * @param packageNames    specified package name
+     * @param packageNames   specified package name
      * @param interfaceClass specified interface
      */
     public static <T> Set<Class<? extends T>> getSubClass(Object[] packageNames, Class<T> interfaceClass) {
