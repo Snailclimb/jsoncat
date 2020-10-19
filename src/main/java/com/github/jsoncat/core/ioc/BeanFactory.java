@@ -19,7 +19,7 @@ public final class BeanFactory {
     // ioc bean 容器
     public static final Map<String, Object> BEANS = new ConcurrentHashMap<>(128);
 
-    private static Map<String, String[]> singleBeanNamesTypeMap = new ConcurrentHashMap<>(128);
+    private static final Map<String, String[]> SINGLE_BEAN_NAMES_TYPE_MAP = new ConcurrentHashMap<>(128);
 
     public static void loadBeans() {
         ClassFactory.CLASSES.get(Component.class).forEach(aClass -> {
@@ -61,7 +61,7 @@ public final class BeanFactory {
 
     private static String[] getBeanNamesForType(Class<?> type) {
         String beanName = type.getName();
-        String[] beanNames = singleBeanNamesTypeMap.get(beanName);
+        String[] beanNames = SINGLE_BEAN_NAMES_TYPE_MAP.get(beanName);
         if (beanNames == null) {
             List<String> beanNamesList = new ArrayList<>();
             for (Map.Entry<String, Object> beanEntry : BEANS.entrySet()) {
@@ -79,7 +79,7 @@ public final class BeanFactory {
                 }
             }
             beanNames = beanNamesList.toArray(new String[0]);
-            singleBeanNamesTypeMap.put(beanName, beanNames);
+            SINGLE_BEAN_NAMES_TYPE_MAP.put(beanName, beanNames);
         }
         return beanNames;
     }

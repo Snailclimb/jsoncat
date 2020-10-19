@@ -1,11 +1,11 @@
 package com.github.jsoncat.core.aop.factory;
 
-import com.github.jsoncat.core.aop.intercept.BeanPostProcessor;
+import com.github.jsoncat.core.common.BeanPostProcessor;
 import com.github.jsoncat.core.aop.intercept.CglibAopProxyBeanPostProcessor;
 import com.github.jsoncat.core.aop.intercept.JdkAopProxyBeanPostProcessor;
 
 
-public class BeanPostProcessorFactory {
+public class AopProxyBeanPostProcessorFactory {
 
     /**
      * @param beanClass 目标类

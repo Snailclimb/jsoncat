@@ -1,4 +1,4 @@
-package com.github.jsoncat.core.aop.intercept;
+package com.github.jsoncat.core.common;
 
 
 /**
@@ -8,7 +8,6 @@ package com.github.jsoncat.core.aop.intercept;
  * @createTime 2020年10月6日10:20:26
  */
 public interface BeanPostProcessor {
-
     default Object postProcessAfterInitialization(Object bean) {
         return bean;
     }

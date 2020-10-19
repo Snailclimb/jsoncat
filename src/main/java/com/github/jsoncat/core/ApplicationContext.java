@@ -22,8 +22,6 @@ import java.util.*;
 import java.util.stream.Stream;
 
 /**
- * 将路由和方法对应起来
- *
  * @author shuang.kou
  * @createTime 2020年09月24日 16:49:00
  **/
@@ -35,7 +33,7 @@ public final class ApplicationContext {
         //print banner
         Banner.printBanner();
         //analyse package
-        String[] packageNames = analysisPackageNames(applicationClass);
+        String[] packageNames = getPackageNames(applicationClass);
         // Load classes with custom annotation
         ClassFactory.loadClass(packageNames);
         // Load routes
@@ -45,7 +43,7 @@ public final class ApplicationContext {
         // Load interceptors
         InterceptorFactory.loadInterceptors(packageNames);
         // Traverse all the beans in the ioc container and inject instances for all @Autowired annotated attributes.
-        DependencyInjection.dependencyInjection(packageNames);
+        DependencyInjection.inject(packageNames);
         //load configuration
         loadResources(applicationClass);
         // Perform some callback events
@@ -56,7 +54,7 @@ public final class ApplicationContext {
         return APPLICATION_CONTEXT;
     }
 
-    private static String[] analysisPackageNames(Class<?> applicationClass) {
+    private static String[] getPackageNames(Class<?> applicationClass) {
         ComponentScan componentScan = applicationClass.getAnnotation(ComponentScan.class);
         return !Objects.isNull(componentScan) ? componentScan.value()
                 : new String[]{applicationClass.getPackage().getName()};
