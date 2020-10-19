@@ -17,14 +17,14 @@ public class DependencyInjection {
     public static void inject(String[] packageName) {
         Map<String, Object> beans = BeanFactory.BEANS;
         if (beans.size() > 0) {
-            BeanFactory.BEANS.values().forEach(bean -> prepareBean(bean, packageName));
+            BeanFactory.BEANS.values().forEach(bean -> buildUpBean(bean, packageName));
         }
     }
 
     /**
      * 准备bean
      */
-    private static void prepareBean(Object beanInstance, String[] packageNames) {
+    private static void buildUpBean(Object beanInstance, String[] packageNames) {
         AutowiredBeanInitialization autowiredBeanPostProcessor = new AutowiredBeanInitialization(packageNames);
         autowiredBeanPostProcessor.initialize(beanInstance);
     }

@@ -1,7 +1,6 @@
 package com.github.jsoncat.core.aop.intercept;
 
 import com.github.jsoncat.core.aop.factory.InterceptorFactory;
-import com.github.jsoncat.core.common.BeanPostProcessor;
 
 public abstract class AbstractAopProxyBeanPostProcessor implements BeanPostProcessor {
 
