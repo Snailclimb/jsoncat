@@ -25,7 +25,7 @@ public class DependencyInjection {
      * 准备bean
      */
     private static void prepareBean(Object beanInstance, String[] packageNames) {
-        AutowiredBeanProcessor autowiredBeanPostProcessor = new AutowiredBeanProcessor(packageNames);
+        AutowiredBeanInitialization autowiredBeanPostProcessor = new AutowiredBeanInitialization(packageNames);
         autowiredBeanPostProcessor.initialize(beanInstance);
     }
 

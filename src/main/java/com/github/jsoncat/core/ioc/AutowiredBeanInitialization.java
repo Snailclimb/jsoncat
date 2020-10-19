@@ -1,10 +1,13 @@
 package com.github.jsoncat.core.ioc;
 
+import com.github.jsoncat.annotation.config.Value;
 import com.github.jsoncat.annotation.ioc.Autowired;
 import com.github.jsoncat.annotation.ioc.Qualifier;
+import com.github.jsoncat.common.util.ObjectUtil;
 import com.github.jsoncat.common.util.ReflectionUtil;
 import com.github.jsoncat.core.aop.factory.AopProxyBeanPostProcessorFactory;
 import com.github.jsoncat.core.common.BeanPostProcessor;
+import com.github.jsoncat.core.config.ConfigurationManager;
 import com.github.jsoncat.exception.CanNotDetermineTargetBeanException;
 import com.github.jsoncat.exception.InterfaceNotHaveImplementedClassException;
 
@@ -17,10 +20,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author shuang.kou
  * @createTime 2020年10月19日 10:08:00
  **/
-public class AutowiredBeanProcessor {
+public class AutowiredBeanInitialization {
     private final String[] packageNames;
 
-    public AutowiredBeanProcessor(String[] packageNames) {
+    public AutowiredBeanInitialization(String[] packageNames) {
         this.packageNames = packageNames;
     }
 
@@ -42,6 +45,16 @@ public class AutowiredBeanProcessor {
                     BeanPostProcessor beanPostProcessor = AopProxyBeanPostProcessorFactory.get(beanField.getType());
                     beanFieldInstance = beanPostProcessor.postProcessAfterInitialization(beanFieldInstance);
                     ReflectionUtil.setField(beanInstance, beanField, beanFieldInstance);
+                }
+                if (beanField.isAnnotationPresent(Value.class)) {
+                    String key = beanField.getDeclaredAnnotation(Value.class).value();
+                    ConfigurationManager configurationManager = (ConfigurationManager) BeanFactory.BEANS.get(ConfigurationManager.class.getName());
+                    String value = configurationManager.getString(key);
+                    if (value == null) {
+                        throw new IllegalArgumentException("can not find target value for property:{" + key + "}");
+                    }
+                    Object convertedValue = ObjectUtil.convert(beanField.getType(), value);
+                    ReflectionUtil.setField(beanInstance, beanField, convertedValue);
                 }
             }
         }

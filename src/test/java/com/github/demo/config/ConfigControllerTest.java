@@ -1,4 +1,4 @@
-package com.github.demo.aop;
+package com.github.demo.config;
 
 import com.github.demo.TestConfig;
 import io.restassured.RestAssured;
@@ -8,18 +8,19 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.with;
 import static org.hamcrest.CoreMatchers.containsString;
 
-class StudentControllerTest {
-
+class ConfigControllerTest {
     @BeforeAll
     static void setUp() {
         RestAssured.baseURI = TestConfig.host;
     }
 
-    // test @Qualifier
     @Test
-    void should_get_student_summary_successful() {
-        String expect = "i am a good student! The teacher said I was great. The HeadMaster said I was very clever.";
-        with().when().get("student/summary").then().assertThat().statusCode(200)
+    void should_get_properties_successfully() {
+        String expect = "javaguide";
+        with().when().get("config/project-info").then().assertThat().statusCode(200)
                 .body(containsString(expect));
+        String expect2 = "jsoncat";
+        with().when().get("config?key=jsoncat.name").then().assertThat().statusCode(200)
+                .body(containsString(expect2));
     }
 }

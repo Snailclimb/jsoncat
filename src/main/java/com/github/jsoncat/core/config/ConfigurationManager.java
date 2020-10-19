@@ -26,7 +26,6 @@ public class ConfigurationManager implements Configuration {
     }
 
     @Override
-
     public int getInt(String id) {
         return configuration.getInt(id);
     }

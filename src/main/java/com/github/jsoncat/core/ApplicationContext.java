@@ -40,12 +40,12 @@ public final class ApplicationContext {
         RouteMethodMapper.loadRoutes();
         // Load beans managed by the ioc container
         BeanFactory.loadBeans();
+        //load configuration
+        loadResources(applicationClass);
         // Load interceptors
         InterceptorFactory.loadInterceptors(packageNames);
         // Traverse all the beans in the ioc container and inject instances for all @Autowired annotated attributes.
         DependencyInjection.inject(packageNames);
-        //load configuration
-        loadResources(applicationClass);
         // Perform some callback events
         callRunners();
     }
@@ -87,8 +87,8 @@ public final class ApplicationContext {
                         filePaths.add(p);
                     }
                 }
-                ConfigurationManager configuration = BeanFactory.getBean(ConfigurationManager.class);
-                configuration.loadResources(filePaths);
+                ConfigurationManager configurationManager = BeanFactory.getBean(ConfigurationManager.class);
+                configurationManager.loadResources(filePaths);
             } catch (URISyntaxException | IOException ignored) {
 
             }
