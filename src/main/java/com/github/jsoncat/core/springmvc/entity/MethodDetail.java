@@ -1,11 +1,11 @@
 package com.github.jsoncat.core.springmvc.entity;
 
-import com.github.jsoncat.common.util.UrlUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -33,9 +33,27 @@ public class MethodDetail {
             if (b) {
                 this.setMethod(value);
                 String url = urlMappings.get(key);
-                Map<String, String> urlParameterMappings = UrlUtil.getUrlParameterMappings(requestPath, url);
+                Map<String, String> urlParameterMappings = getUrlParameterMappings(requestPath, url);
                 this.setUrlParameterMappings(urlParameterMappings);
             }
         });
     }
+
+    /**
+     * Match the request path parameter to the URL parameter
+     * <p>
+     * eg: requestPath="/user/1" url="/user/{id}"
+     * this method will return:{"id" -> "1","user" -> "user"}
+     * </p>
+     */
+    private Map<String, String> getUrlParameterMappings(String requestPath, String url) {
+        String[] requestParams = requestPath.split("/");
+        String[] urlParams = url.split("/");
+        Map<String, String> urlParameterMappings = new HashMap<>();
+        for (int i = 1; i < urlParams.length; i++) {
+            urlParameterMappings.put(urlParams[i].replace("{", "").replace("}", ""), requestParams[i]);
+        }
+        return urlParameterMappings;
+    }
+
 }

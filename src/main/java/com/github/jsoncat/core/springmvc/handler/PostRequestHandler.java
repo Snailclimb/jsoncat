@@ -1,6 +1,6 @@
 package com.github.jsoncat.core.springmvc.handler;
 
-import com.github.jsoncat.common.util.UrlUtil;
+import com.github.jsoncat.core.springmvc.util.UrlUtil;
 import com.github.jsoncat.core.ioc.BeanFactory;
 import com.github.jsoncat.core.ioc.IocUtil;
 import com.github.jsoncat.core.springmvc.entity.MethodDetail;

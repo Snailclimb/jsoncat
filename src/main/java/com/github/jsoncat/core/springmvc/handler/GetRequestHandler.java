@@ -1,21 +1,25 @@
 package com.github.jsoncat.core.springmvc.handler;
 
-import com.github.jsoncat.common.util.UrlUtil;
 import com.github.jsoncat.core.ioc.BeanFactory;
 import com.github.jsoncat.core.ioc.IocUtil;
 import com.github.jsoncat.core.springmvc.entity.MethodDetail;
+import com.github.jsoncat.core.springmvc.factory.FullHttpResponseFactory;
 import com.github.jsoncat.core.springmvc.factory.ParameterResolverFactory;
 import com.github.jsoncat.core.springmvc.factory.RouteMethodMapper;
 import com.github.jsoncat.core.springmvc.resolver.ParameterResolver;
-import com.github.jsoncat.core.springmvc.factory.FullHttpResponseFactory;
+import com.github.jsoncat.core.springmvc.util.UrlUtil;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.QueryStringDecoder;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.CharEncoding;
+import org.apache.commons.codec.Charsets;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +34,7 @@ public class GetRequestHandler implements RequestHandler {
     @Override
     public FullHttpResponse handle(FullHttpRequest fullHttpRequest) {
         String requestUri = fullHttpRequest.uri();
-        Map<String, String> queryParameterMappings = UrlUtil.getQueryParams(requestUri);
+        Map<String, String> queryParameterMappings = getQueryParams(requestUri);
         // get http request path，such as "/user"
         String requestPath = UrlUtil.getRequestPath(requestUri);
         // get target method
@@ -60,5 +64,18 @@ public class GetRequestHandler implements RequestHandler {
         return FullHttpResponseFactory.getSuccessResponse(targetMethod, targetMethodParams, targetObject);
     }
 
-
+    /**
+     * get the parameters of uri
+     */
+    private Map<String, String> getQueryParams(String uri) {
+        QueryStringDecoder queryDecoder = new QueryStringDecoder(uri, Charsets.toCharset(CharEncoding.UTF_8));
+        Map<String, List<String>> parameters = queryDecoder.parameters();
+        Map<String, String> queryParams = new HashMap<>();
+        for (Map.Entry<String, List<String>> attr : parameters.entrySet()) {
+            for (String attrVal : attr.getValue()) {
+                queryParams.put(attr.getKey(), attrVal);
+            }
+        }
+        return queryParams;
+    }
 }

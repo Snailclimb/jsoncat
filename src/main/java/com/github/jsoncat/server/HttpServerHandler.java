@@ -1,6 +1,6 @@
 package com.github.jsoncat.server;
 
-import com.github.jsoncat.common.util.UrlUtil;
+import com.github.jsoncat.core.springmvc.util.UrlUtil;
 import com.github.jsoncat.core.springmvc.factory.RequestHandlerFactory;
 import com.github.jsoncat.core.springmvc.handler.RequestHandler;
 import com.github.jsoncat.core.springmvc.factory.FullHttpResponseFactory;

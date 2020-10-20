@@ -3,7 +3,6 @@ package com.github.jsoncat.core.springmvc.factory;
 import com.github.jsoncat.annotation.springmvc.GetMapping;
 import com.github.jsoncat.annotation.springmvc.PostMapping;
 import com.github.jsoncat.annotation.springmvc.RestController;
-import com.github.jsoncat.common.util.UrlUtil;
 import com.github.jsoncat.core.springmvc.entity.MethodDetail;
 import com.github.jsoncat.factory.ClassFactory;
 import io.netty.handler.codec.http.HttpMethod;
@@ -43,7 +42,7 @@ public class RouteMethodMapper {
                         GetMapping getMapping = method.getAnnotation(GetMapping.class);
                         if (getMapping != null) {
                             String url = baseUrl + getMapping.value();
-                            String formattedUrl = UrlUtil.formatUrl(url);
+                            String formattedUrl = formatUrl(url);
                             GET_REQUEST_MAPPINGS.put(formattedUrl, method);
                             GET_URL_MAPPINGS.put(formattedUrl, url);
                         }
@@ -52,7 +51,7 @@ public class RouteMethodMapper {
                         PostMapping postMapping = method.getAnnotation(PostMapping.class);
                         if (postMapping != null) {
                             String url = baseUrl + postMapping.value();
-                            String formattedUrl = UrlUtil.formatUrl(url);
+                            String formattedUrl = formatUrl(url);
                             POST_REQUEST_MAPPINGS.put(formattedUrl, method);
                             POST_URL_MAPPINGS.put(formattedUrl, url);
                         }
@@ -74,6 +73,17 @@ public class RouteMethodMapper {
             return methodDetail;
         }
         return null;
+    }
+
+    /**
+     * format the url
+     * for example : "/user/{name}" -> "^/user/[\u4e00-\u9fa5_a-zA-Z0-9]+/?$"
+     */
+    private static String formatUrl(String url) {
+        // replace {xxx} placeholders with regular expressions matching Chinese, English letters and numbers, and underscores
+        String originPattern = url.replaceAll("(\\{\\w+})", "[\\\\u4e00-\\\\u9fa5_a-zA-Z0-9]+");
+        String pattern = "^" + originPattern + "/?$";
+        return pattern.replaceAll("/+", "/");
     }
 
 }
