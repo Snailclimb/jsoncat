@@ -1,6 +1,5 @@
 package com.github.jsoncat.common.util;
 
-import com.github.jsoncat.exception.CanNotInvokeTargetMethodException;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 import org.reflections.scanners.TypeAnnotationsScanner;
@@ -47,19 +46,6 @@ public class ReflectionUtil {
         return annotatedClass;
     }
 
-
-    /**
-     * Get the implementation class of the interface
-     *
-     * @param packageName    specified package name
-     * @param interfaceClass specified interface
-     */
-    public static <T> Set<Class<? extends T>> getSubClass(String packageName, Class<T> interfaceClass) {
-        Reflections reflections = new Reflections(packageName);
-        return reflections.getSubTypesOf(interfaceClass);
-
-    }
-
     /**
      * Get the implementation class of the interface
      *
@@ -79,13 +65,11 @@ public class ReflectionUtil {
      * @return object created by the target class
      */
     public static Object newInstance(Class<?> cls) {
-        Object instance = null;
         try {
-            instance = cls.newInstance();
+            return cls.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            log.error("new instance failed", e);
+            throw new IllegalStateException(e.getMessage(), e);
         }
-        return instance;
     }
 
     /**
@@ -96,13 +80,11 @@ public class ReflectionUtil {
      * @param value the value assigned to the field
      */
     public static void setField(Object obj, Field field, Object value) {
-
         field.setAccessible(true);
         try {
             field.set(obj, value);
-        } catch (IllegalAccessException e) {
-            log.error("set field failed", e);
-            e.printStackTrace();
+        } catch (IllegalAccessException impossible) {
+            throw new AssertionError(impossible);
         }
 
     }
@@ -116,12 +98,10 @@ public class ReflectionUtil {
      */
     public static Object executeTargetMethod(Object targetObject, Method method, Object... args) {
         try {
-            // invoke target method through reflection
             return method.invoke(targetObject, args);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new CanNotInvokeTargetMethodException(e.toString());
+        } catch (IllegalAccessException | InvocationTargetException ignored) {
         }
-
+        return null;
     }
 
     /**
@@ -134,8 +114,7 @@ public class ReflectionUtil {
         try {
             // invoke target method through reflection
             method.invoke(targetObject, args);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new CanNotInvokeTargetMethodException(e.toString());
+        } catch (IllegalAccessException | InvocationTargetException ignored) {
         }
     }
 }
