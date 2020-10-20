@@ -8,8 +8,6 @@ import com.github.jsoncat.annotation.springmvc.RequestBody;
 import com.github.jsoncat.annotation.springmvc.RequestParam;
 import com.github.jsoncat.annotation.springmvc.RestController;
 
-import java.util.List;
-
 /**
  * @author shuang.kou
  * @createTime 2020年09月24日 14:52:00
@@ -30,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping
-    public List<User> create(@RequestBody UserDto userDto) {
-        return userService.create(userDto);
+    public void create(@RequestBody UserDto userDto) {
+        userService.create(userDto);
     }
 }

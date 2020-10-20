@@ -1,13 +1,15 @@
 package com.github.jsoncat.server;
 
 import com.github.jsoncat.common.util.UrlUtil;
-import com.github.jsoncat.core.springmvc.handler.RequestHandler;
 import com.github.jsoncat.core.springmvc.factory.RequestHandlerFactory;
+import com.github.jsoncat.core.springmvc.handler.RequestHandler;
+import com.github.jsoncat.core.springmvc.factory.FullHttpResponseFactory;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.util.AsciiString;
 import lombok.extern.slf4j.Slf4j;
@@ -29,26 +31,23 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpReque
         if (uri.equals(FAVICON_ICO)) {
             return;
         }
-        RequestHandler requestHandler = RequestHandlerFactory.create(fullHttpRequest.method());
-        Object result;
-        FullHttpResponse response;
+        RequestHandler requestHandler = RequestHandlerFactory.get(fullHttpRequest.method());
+        FullHttpResponse fullHttpResponse;
         try {
-            result = requestHandler.handle(fullHttpRequest);
-            response = HttpResponse.ok(result);
+            fullHttpResponse = requestHandler.handle(fullHttpRequest);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
             String requestPath = UrlUtil.getRequestPath(fullHttpRequest.uri());
-            response = HttpResponse.internalServerError(requestPath, e.toString());
+            fullHttpResponse = FullHttpResponseFactory.getErrorResponse(requestPath, e.toString(), HttpResponseStatus.INTERNAL_SERVER_ERROR);
         }
         boolean keepAlive = HttpUtil.isKeepAlive(fullHttpRequest);
         if (!keepAlive) {
-            ctx.write(response).addListener(ChannelFutureListener.CLOSE);
+            ctx.write(fullHttpResponse).addListener(ChannelFutureListener.CLOSE);
         } else {
-            response.headers().set(CONNECTION, KEEP_ALIVE);
-            ctx.write(response);
+            fullHttpResponse.headers().set(CONNECTION, KEEP_ALIVE);
+            ctx.write(fullHttpResponse);
         }
     }
-
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {

@@ -115,19 +115,17 @@ public class ReflectionUtil {
      * @return the result of method execution
      */
     public static Object executeTargetMethod(Object targetObject, Method method, Object... args) {
-        Object result;
         try {
             // invoke target method through reflection
-            result = method.invoke(targetObject, args);
-            log.info("invoke target method successfully ,result is: [{}]", result.toString());
+            return method.invoke(targetObject, args);
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new CanNotInvokeTargetMethodException(e.toString());
         }
-        return result;
+
     }
 
     /**
-     * execute the target method
+     * execute the void method
      *
      * @param method target method
      * @param args   method parameters

@@ -5,7 +5,7 @@ import com.github.jsoncat.annotation.ioc.Autowired;
 import com.github.jsoncat.annotation.springmvc.GetMapping;
 import com.github.jsoncat.annotation.springmvc.RestController;
 
-@RestController("/test")
+@RestController("/circular-dependency")
 public class CircularDependencyController {
 
     @Autowired
@@ -17,7 +17,7 @@ public class CircularDependencyController {
     @Autowired
     private CircularDependencyC testC;
 
-    @GetMapping("/test")
+    @GetMapping
     public void test() {
         testA.testA();
         testB.testB();

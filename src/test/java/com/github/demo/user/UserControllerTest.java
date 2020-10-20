@@ -1,8 +1,6 @@
 package com.github.demo.user;
 
 import com.github.demo.TestConfig;
-import com.github.demo.user.UserDto;
-import com.github.jsoncat.serialize.impl.JacksonSerializer;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -21,7 +19,7 @@ class UserControllerTest {
 
     // test @PathVariable
     @Test
-    void should_get_user_by_id() {
+    void get_user_by_id() {
         when().get("/user/{id}", 1).
                 then().
                 statusCode(200).
@@ -31,7 +29,7 @@ class UserControllerTest {
 
     // test @RequestParam
     @Test
-    void should_get_user() {
+    void get_user() {
         when().get("/user?name=yasuo&des=哈撒尅&age=18").
                 then().
                 statusCode(200).
@@ -39,11 +37,15 @@ class UserControllerTest {
                         "des", equalTo("哈撒尅"),
                         "age", equalTo(18));
 
+        when().get("/user?name=yasuo&des=哈撒尅").
+                then().
+                statusCode(500);
+
     }
 
     //test @RequestBody
     @Test
-    void should_create_user_successful() {
+    void create_user() {
         UserDto user = new UserDto("压缩", "哈撒尅", 18);
         with().body(user).header("Content-Type", "application/json")
                 .when().post("/user").
