@@ -11,22 +11,16 @@ import java.util.Map;
 @Slf4j
 public class DependencyInjection {
 
+
     /**
      * 遍历ioc容器所有bean的属性, 为所有带@Autowired/@Value注解的属性注入实例
      */
-    public static void inject(String[] packageName) {
+    public static void inject(String[] packageNames) {
+        AutowiredBeanInitialization autowiredBeanInitialization = new AutowiredBeanInitialization(packageNames);
         Map<String, Object> beans = BeanFactory.BEANS;
         if (beans.size() > 0) {
-            BeanFactory.BEANS.values().forEach(bean -> buildUpBean(bean, packageName));
+            BeanFactory.BEANS.values().forEach(autowiredBeanInitialization::initialize);
         }
-    }
-
-    /**
-     * 准备bean
-     */
-    private static void buildUpBean(Object beanInstance, String[] packageNames) {
-        AutowiredBeanInitialization autowiredBeanPostProcessor = new AutowiredBeanInitialization(packageNames);
-        autowiredBeanPostProcessor.initialize(beanInstance);
     }
 
 }

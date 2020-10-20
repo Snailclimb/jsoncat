@@ -13,12 +13,10 @@ import static org.hamcrest.Matchers.equalTo;
 
 
 class UserControllerTest {
-    private static JacksonSerializer jacksonSerializer;
 
     @BeforeAll
     static void setUp() {
         RestAssured.baseURI = TestConfig.host;
-        jacksonSerializer = new JacksonSerializer();
     }
 
     // test @PathVariable
@@ -47,7 +45,7 @@ class UserControllerTest {
     @Test
     void should_create_user_successful() {
         UserDto user = new UserDto("压缩", "哈撒尅", 18);
-        with().body(jacksonSerializer.serialize(user)).header("Content-Type", "application/json")
+        with().body(user).header("Content-Type", "application/json")
                 .when().post("/user").
                 then().
                 statusCode(200);
