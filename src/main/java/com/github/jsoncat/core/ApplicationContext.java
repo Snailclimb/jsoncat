@@ -31,7 +31,7 @@ public final class ApplicationContext {
 
     public void run(Class<?> applicationClass) {
         //print banner
-        Banner.printBanner();
+        Banner.print();
         //analyse package
         String[] packageNames = getPackageNames(applicationClass);
         // Load classes with custom annotation

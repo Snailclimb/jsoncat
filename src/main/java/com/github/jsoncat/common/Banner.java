@@ -15,7 +15,7 @@ public class Banner {
     // banner made by https://www.bootschool.net/ascii
     public static final String DEFAULT_BANNER_NAME = "banner.txt";
 
-    public static void printBanner() {
+    public static void print() {
         URL url = Thread.currentThread().getContextClassLoader().getResource(DEFAULT_BANNER_NAME);
         if (url != null) {
             try {

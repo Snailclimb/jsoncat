@@ -71,9 +71,13 @@
 - [ ] `@ControllerAdvice`
 - [ ] `@ExceptionHandler`
 
+#### 配置文件读取
+
+- [x] 支持读取 yaml 以及 properties 类型的文件
+
 #### 其他
 
-- [ ] `@SpringBootApplication`
+- [x] `@SpringBootApplication`
 - [ ] `@Configuration`
 
 ### 代码质量

@@ -1,7 +1,6 @@
 plugins {
     id 'java'
     id "checkstyle"
-    id "com.github.spotbugs" version "4.3.0"
 }
 
 group 'com.github.jsoncat'
@@ -62,5 +61,3 @@ processTestResources.dependsOn copyTestResources
 
 apply from: rootProject.file("gradle/git-hooks.gradle")
 apply from: rootProject.file("gradle/checkstyle.gradle")
-apply from: rootProject.file("gradle/pmd.gradle")
-apply from: rootProject.file("gradle/spotbugs.gradle")
