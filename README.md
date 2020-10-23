@@ -22,7 +22,7 @@
 2. 代码简洁，可读性好
 3. 支持 Spring MVC 常用的注解，用法也和 Spring MVC 基本一样
 4. 后端只返回 json 数据给前端
-5. 集成了 checkstyle 、spotbugs、pmd 并设置了 commit 钩子来保证代码质量
+5. 集成了 checkstyle 、~~spotbugs、pmd~~ 并设置了 commit 钩子来保证代码质量
 
 ## 框架基本情况和待办
 

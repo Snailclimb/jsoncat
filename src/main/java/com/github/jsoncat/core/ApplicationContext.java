@@ -12,14 +12,14 @@ import com.github.jsoncat.core.springmvc.factory.RouteMethodMapper;
 import com.github.jsoncat.factory.ClassFactory;
 import com.github.jsoncat.server.HttpServer;
 
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author shuang.kou
@@ -74,24 +74,18 @@ public final class ApplicationContext {
 
 
     private void loadResources(Class<?> applicationClass) {
-        URL url = applicationClass.getClassLoader().getResource("");
-        if (!Objects.isNull(url)) {
-            try {
-                List<Path> filePaths = new ArrayList<>();
-                Path path = Paths.get(url.toURI());
-                Stream<Path> stream = Files.list(path);
-                Iterator<Path> ite = stream.iterator();
-                while (ite.hasNext()) {
-                    Path p = ite.next();
-                    if (p.getFileName().toString().startsWith(Configuration.APPLICATION_NAME)) {
-                        filePaths.add(p);
-                    }
+        ClassLoader classLoader = applicationClass.getClassLoader();
+        List<Path> filePaths = new ArrayList<>();
+        for (String configName : Configuration.DEFAULT_CONFIG_NAMES) {
+            URL url = classLoader.getResource(configName);
+            if (!Objects.isNull(url)) {
+                try {
+                    filePaths.add(Paths.get(url.toURI()));
+                } catch (URISyntaxException ignored) {
                 }
-                ConfigurationManager configurationManager = BeanFactory.getBean(ConfigurationManager.class);
-                configurationManager.loadResources(filePaths);
-            } catch (URISyntaxException | IOException ignored) {
-
             }
         }
+        ConfigurationManager configurationManager = BeanFactory.getBean(ConfigurationManager.class);
+        configurationManager.loadResources(filePaths);
     }
 }

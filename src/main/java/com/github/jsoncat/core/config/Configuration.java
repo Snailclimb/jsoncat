@@ -6,7 +6,7 @@ import java.util.Map;
 
 public interface Configuration {
 
-    String APPLICATION_NAME = "application";
+    String[] DEFAULT_CONFIG_NAMES = {"application.properties", "application.yaml"};
 
     int getInt(String id);
 
