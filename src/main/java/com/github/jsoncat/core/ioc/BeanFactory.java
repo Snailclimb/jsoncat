@@ -23,7 +23,7 @@ public final class BeanFactory {
 
     public static void loadBeans() {
         ClassFactory.CLASSES.get(Component.class).forEach(aClass -> {
-            String beanName = IocUtil.getBeanName(aClass);
+            String beanName = BeanHelper.getBeanName(aClass);
             Object obj = ReflectionUtil.newInstance(aClass);
             BEANS.put(beanName, obj);
         });

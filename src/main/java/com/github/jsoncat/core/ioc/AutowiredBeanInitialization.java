@@ -38,7 +38,7 @@ public class AutowiredBeanInitialization {
             for (Field beanField : beanFields) {
                 if (beanField.isAnnotationPresent(Autowired.class)) {
                     Object beanFieldInstance = processAutowiredAnnotationField(beanField);
-                    String beanFieldName = IocUtil.getBeanName(beanField.getType());
+                    String beanFieldName = BeanHelper.getBeanName(beanField.getType());
                     // 解决循环依赖问题
                     beanFieldInstance = resolveCircularDependency(beanInstance, beanFieldInstance, beanFieldName);
                     // AOP
@@ -62,8 +62,8 @@ public class AutowiredBeanInitialization {
      */
     private Object processAutowiredAnnotationField(Field beanField) {
         Class<?> beanFieldClass = beanField.getType();
-        String beanFieldName = IocUtil.getBeanName(beanFieldClass);
-        Object beanFieldInstance = BeanFactory.BEANS.get(beanFieldName);
+        String beanFieldName = BeanHelper.getBeanName(beanFieldClass);
+        Object beanFieldInstance;
         if (beanFieldClass.isInterface()) {
             @SuppressWarnings("unchecked")
             Set<Class<?>> subClasses = ReflectionUtil.getSubClass(packageNames, (Class<Object>) beanFieldClass);
@@ -71,16 +71,16 @@ public class AutowiredBeanInitialization {
                 throw new InterfaceNotHaveImplementedClassException(beanFieldClass.getName() + "is interface and do not have implemented class exception");
             }
             if (subClasses.size() == 1) {
-                Class<?> aClass = subClasses.iterator().next();
-                beanFieldInstance = ReflectionUtil.newInstance(aClass);
+                Class<?> subClass = subClasses.iterator().next();
+                beanFieldName = BeanHelper.getBeanName(subClass);
             }
             if (subClasses.size() > 1) {
                 Qualifier qualifier = beanField.getDeclaredAnnotation(Qualifier.class);
                 beanFieldName = qualifier == null ? beanFieldName : qualifier.value();
-                beanFieldInstance = BeanFactory.BEANS.get(beanFieldName);
             }
 
         }
+        beanFieldInstance = BeanFactory.BEANS.get(beanFieldName);
         if (beanFieldInstance == null) {
             throw new CanNotDetermineTargetBeanException("can not determine target bean of" + beanFieldClass.getName());
         }

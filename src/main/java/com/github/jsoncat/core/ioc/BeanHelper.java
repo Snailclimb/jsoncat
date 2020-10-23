@@ -6,7 +6,7 @@ import com.github.jsoncat.annotation.ioc.Component;
  * @author shuang.kou
  * @createTime 2020年10月07日 21:23:00
  **/
-public class IocUtil {
+public class BeanHelper {
 
     /**
      * get the bean name

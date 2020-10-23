@@ -1,7 +1,7 @@
 package com.github.jsoncat.core.springmvc.handler;
 
 import com.github.jsoncat.core.ioc.BeanFactory;
-import com.github.jsoncat.core.ioc.IocUtil;
+import com.github.jsoncat.core.ioc.BeanHelper;
 import com.github.jsoncat.core.springmvc.entity.MethodDetail;
 import com.github.jsoncat.core.springmvc.factory.FullHttpResponseFactory;
 import com.github.jsoncat.core.springmvc.factory.ParameterResolverFactory;
@@ -59,7 +59,7 @@ public class GetRequestHandler implements RequestHandler {
                 targetMethodParams.add(param);
             }
         }
-        String beanName = IocUtil.getBeanName(methodDetail.getMethod().getDeclaringClass());
+        String beanName = BeanHelper.getBeanName(methodDetail.getMethod().getDeclaringClass());
         Object targetObject = BeanFactory.BEANS.get(beanName);
         return FullHttpResponseFactory.getSuccessResponse(targetMethod, targetMethodParams, targetObject);
     }
