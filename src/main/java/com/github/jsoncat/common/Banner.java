@@ -13,18 +13,22 @@ import java.nio.file.Paths;
  **/
 public class Banner {
     // banner made by https://www.bootschool.net/ascii
-    public static final String DEFAULT_BANNER_NAME = "banner.txt";
+    public static final String DEFAULT_BANNER_NAME = "default-banner.txt";
+    public static final String CUSTOM_BANNER_NAME = "banner.txt";
 
     public static void print() {
-        URL url = Thread.currentThread().getContextClassLoader().getResource(DEFAULT_BANNER_NAME);
+        URL url = Thread.currentThread().getContextClassLoader().getResource(CUSTOM_BANNER_NAME);
         if (url != null) {
             try {
                 Path path = Paths.get(url.toURI());
                 Files.lines(path).forEach(System.out::println);
-            } catch (URISyntaxException | IOException e) {
-                e.printStackTrace();
-            }
-
+            } catch (URISyntaxException | IOException e) { }
+        } else {
+            url = Thread.currentThread().getContextClassLoader().getResource(DEFAULT_BANNER_NAME);
+            try {
+                Path path = Paths.get(url.toURI());
+                Files.lines(path).forEach(System.out::println);
+            } catch (URISyntaxException | IOException e) { }
         }
     }
 }
