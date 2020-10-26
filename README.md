@@ -1,6 +1,7 @@
 > 本项目已经同步到码云，地址：[https://gitee.com/SnailClimb/jsoncat](https://gitee.com/SnailClimb/jsoncat)。
 >
 > 配套教程正在我的公众号“ **JavaGuide**”上更新，公众号后台回复“**jsoncat**”即可获取所有教程。
+> 考虑到大部分是中文用户，最近会抽时间把注释都修改为中文并添加一些注释帮助大家理解代码。
 
 原创开源不易，觉得不错的话，欢迎给良心作者 1 个 star 鼓励一下！
 
