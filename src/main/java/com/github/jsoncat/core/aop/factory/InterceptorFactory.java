@@ -3,6 +3,7 @@ package com.github.jsoncat.core.aop.factory;
 import com.github.jsoncat.annotation.aop.Aspect;
 import com.github.jsoncat.annotation.aop.Order;
 import com.github.jsoncat.common.util.ReflectionUtil;
+import com.github.jsoncat.core.aop.intercept.BeanValidationInterceptor;
 import com.github.jsoncat.core.aop.intercept.Interceptor;
 import com.github.jsoncat.core.aop.intercept.InternallyAspectInterceptor;
 import com.github.jsoncat.exception.CannotInitializeConstructorException;
@@ -45,6 +46,8 @@ public class InterceptorFactory {
             }
             interceptors.add(interceptor);
         });
+        // 添加Bean验证拦截器
+        interceptors.add(new BeanValidationInterceptor());
         // 根据 order 为拦截器排序
         interceptors = interceptors.stream().sorted(Comparator.comparing(Interceptor::getOrder)).collect(Collectors.toList());
     }

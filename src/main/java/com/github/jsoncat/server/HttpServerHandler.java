@@ -1,9 +1,9 @@
 package com.github.jsoncat.server;
 
-import com.github.jsoncat.core.springmvc.util.UrlUtil;
+import com.github.jsoncat.core.springmvc.factory.FullHttpResponseFactory;
 import com.github.jsoncat.core.springmvc.factory.RequestHandlerFactory;
 import com.github.jsoncat.core.springmvc.handler.RequestHandler;
-import com.github.jsoncat.core.springmvc.factory.FullHttpResponseFactory;
+import com.github.jsoncat.core.springmvc.util.UrlUtil;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -35,8 +35,8 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpReque
         FullHttpResponse fullHttpResponse;
         try {
             fullHttpResponse = requestHandler.handle(fullHttpRequest);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+        } catch (Throwable e) {
+            log.error("Caught an unexpected error.", e);
             String requestPath = UrlUtil.getRequestPath(fullHttpRequest.uri());
             fullHttpResponse = FullHttpResponseFactory.getErrorResponse(requestPath, e.toString(), HttpResponseStatus.INTERNAL_SERVER_ERROR);
         }
