@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 import org.reflections.scanners.TypeAnnotationsScanner;
 
+import javax.validation.ConstraintViolationException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -99,7 +100,10 @@ public class ReflectionUtil {
     public static Object executeTargetMethod(Object targetObject, Method method, Object... args) {
         try {
             return method.invoke(targetObject, args);
-        } catch (IllegalAccessException | InvocationTargetException ignored) {
+        } catch (Throwable t) {
+            if (t.getCause() != null && t.getCause() instanceof ConstraintViolationException) {
+                throw (ConstraintViolationException) t.getCause();
+            }
         }
         return null;
     }

@@ -24,6 +24,8 @@ def commonsCodecVersion = '1.14'
 def reflectionsVersion = '0.9.12'
 def cglibVersion = '3.3.0'
 def yamlVersion = '1.23'
+def validationApiVersion = '2.0.1.Final'
+def hibernateValidatorVersion = '6.1.5.Final'
 
 dependencies {
     // json解析库：jackson
@@ -41,6 +43,10 @@ dependencies {
     compile "cglib:cglib:${cglibVersion}"
     //yaml配置读取
     compile "org.yaml:snakeyaml:${yamlVersion}"
+    // BEAN验证：JSR-303
+    compile "javax.validation:validation-api:${validationApiVersion}"
+    // BEAN验证：Hibernate的Validator实现
+    compile "org.hibernate:hibernate-validator:${hibernateValidatorVersion}"
     // 语法糖：lombok
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
