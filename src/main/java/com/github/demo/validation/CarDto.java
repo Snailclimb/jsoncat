@@ -8,6 +8,6 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 public class CarDto {
-    @NotNull
+    @NotNull(message = "can not be null")
     private String name;
 }

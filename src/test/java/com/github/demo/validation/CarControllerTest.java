@@ -22,7 +22,7 @@ class CarControllerTest {
             .post("/cars")
             .then()
             .statusCode(500)
-            .body("message", Matchers.equalTo("javax.validation.ConstraintViolationException: name: must not be null"));
+            .body("message", Matchers.equalTo("javax.validation.ConstraintViolationException: name: can not be null"));
     }
 
     @Test
