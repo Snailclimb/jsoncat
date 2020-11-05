@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.Set;
 
 public class BeanValidationInterceptor extends Interceptor {
-    private Validator validator;
+    private final Validator validator;
 
     public BeanValidationInterceptor() {
         ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class)

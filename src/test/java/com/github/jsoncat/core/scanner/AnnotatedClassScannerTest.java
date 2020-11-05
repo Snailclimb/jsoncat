@@ -13,7 +13,8 @@ class AnnotatedClassScannerTest {
 
     @Test
     void should_scan_the_annotated_class() {
-        Set<Class<?>> annotatedClasses = ReflectionUtil.scanAnnotatedClass("com.github.demo", RestController.class);
+        String[] packageNames = {"com.github.demo"};
+        Set<Class<?>> annotatedClasses = ReflectionUtil.scanAnnotatedClass(packageNames, RestController.class);
         assertEquals(6, annotatedClasses.size());
     }
 

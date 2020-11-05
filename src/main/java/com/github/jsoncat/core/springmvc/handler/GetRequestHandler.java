@@ -39,9 +39,6 @@ public class GetRequestHandler implements RequestHandler {
         String requestPath = UrlUtil.getRequestPath(requestUri);
         // get target method
         MethodDetail methodDetail = RouteMethodMapper.getMethodDetail(requestPath, HttpMethod.GET);
-        if (methodDetail == null) {
-            return null;
-        }
         methodDetail.setQueryParameterMappings(queryParameterMappings);
         Method targetMethod = methodDetail.getMethod();
         if (targetMethod == null) {

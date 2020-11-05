@@ -1,13 +1,13 @@
 package com.github.jsoncat.core.springmvc.handler;
 
-import com.github.jsoncat.core.springmvc.util.UrlUtil;
 import com.github.jsoncat.core.ioc.BeanFactory;
 import com.github.jsoncat.core.ioc.BeanHelper;
 import com.github.jsoncat.core.springmvc.entity.MethodDetail;
+import com.github.jsoncat.core.springmvc.factory.FullHttpResponseFactory;
 import com.github.jsoncat.core.springmvc.factory.ParameterResolverFactory;
 import com.github.jsoncat.core.springmvc.factory.RouteMethodMapper;
 import com.github.jsoncat.core.springmvc.resolver.ParameterResolver;
-import com.github.jsoncat.core.springmvc.factory.FullHttpResponseFactory;
+import com.github.jsoncat.core.springmvc.util.UrlUtil;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaders;
@@ -35,10 +35,10 @@ public class PostRequestHandler implements RequestHandler {
         String requestPath = UrlUtil.getRequestPath(requestUri);
         // get target method
         MethodDetail methodDetail = RouteMethodMapper.getMethodDetail(requestPath, HttpMethod.POST);
-        if (methodDetail == null) {
+        Method targetMethod = methodDetail.getMethod();
+        if (targetMethod == null) {
             return null;
         }
-        Method targetMethod = methodDetail.getMethod();
         String contentType = this.getContentType(fullHttpRequest.headers());
         // target method parameters.
         // notice! you should convert it to array when pass into the executeMethod()

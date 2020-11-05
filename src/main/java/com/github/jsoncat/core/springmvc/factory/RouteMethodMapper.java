@@ -19,16 +19,22 @@ import java.util.Set;
  * @createTime 2020年09月29日 13:27:00
  **/
 public class RouteMethodMapper {
-    // get request url -> target method.
-    // eg: "^/user/[\u4e00-\u9fa5_a-zA-Z0-9]+/?$" -> UserController.get(java.lang.Integer)
-    private static final Map<String, Method> URL_TO_GET_REQUEST_METHOD = new HashMap<>();
-    // post request url -> target method.
-    private static final Map<String, Method> URL_TO_POST_REQUEST_METHOD = new HashMap<>();
-    // formatted get request url -> original url
-    // eg : "^/user/[\u4e00-\u9fa5_a-zA-Z0-9]+/?$" -> /user/{id}
-    private static final Map<String, String> GET_URL_MAP = new HashMap<>();
-    // formatted post request url -> original url
-    private static final Map<String, String> POST_URL_MAP = new HashMap<>();
+    public static final HttpMethod[] HTTP_METHODS = {HttpMethod.GET, HttpMethod.POST};
+
+    // key : http method
+    // value : url -> method
+    private static final Map<HttpMethod, Map<String, Method>> REQUEST_METHOD_MAP = new HashMap<>(2);
+    // key : http method
+    // value : formatted url -> original url
+    private static final Map<HttpMethod, Map<String, String>> REQUEST_URL_MAP = new HashMap<>(2);
+
+
+    static {
+        for (HttpMethod httpMethod : HTTP_METHODS) {
+            REQUEST_METHOD_MAP.put(httpMethod, new HashMap<>(128));
+            REQUEST_URL_MAP.put(httpMethod, new HashMap<>(128));
+        }
+    }
 
     public static void loadRoutes() {
         Set<Class<?>> classes = ClassFactory.CLASSES.get(RestController.class);
@@ -41,25 +47,13 @@ public class RouteMethodMapper {
                     if (method.isAnnotationPresent(GetMapping.class)) {
                         GetMapping getMapping = method.getAnnotation(GetMapping.class);
                         if (getMapping != null) {
-                            String url = baseUrl + getMapping.value();
-                            String formattedUrl = formatUrl(url);
-                            if (URL_TO_GET_REQUEST_METHOD.containsKey(formattedUrl)) {
-                                throw new IllegalArgumentException(String.format("duplicate get request handler for url: %s", url));
-                            }
-                            URL_TO_GET_REQUEST_METHOD.put(formattedUrl, method);
-                            GET_URL_MAP.put(formattedUrl, url);
+                            mapUrlToMethod(baseUrl + getMapping.value(), method, HttpMethod.GET);
                         }
                     }
                     if (method.isAnnotationPresent(PostMapping.class)) {
                         PostMapping postMapping = method.getAnnotation(PostMapping.class);
                         if (postMapping != null) {
-                            String url = baseUrl + postMapping.value();
-                            String formattedUrl = formatUrl(url);
-                            if (URL_TO_POST_REQUEST_METHOD.containsKey(formattedUrl)) {
-                                throw new IllegalArgumentException(String.format("duplicate post request handler for url: %s", url));
-                            }
-                            URL_TO_POST_REQUEST_METHOD.put(formattedUrl, method);
-                            POST_URL_MAP.put(formattedUrl, url);
+                            mapUrlToMethod(baseUrl + postMapping.value(), method, HttpMethod.POST);
                         }
                     }
                 }
@@ -69,16 +63,24 @@ public class RouteMethodMapper {
 
     public static MethodDetail getMethodDetail(String requestPath, HttpMethod httpMethod) {
         MethodDetail methodDetail = new MethodDetail();
-        if (httpMethod == HttpMethod.GET) {
-            methodDetail.build(requestPath, URL_TO_GET_REQUEST_METHOD, GET_URL_MAP);
-            return methodDetail;
-        }
+        methodDetail.build(requestPath, REQUEST_METHOD_MAP.get(httpMethod), REQUEST_URL_MAP.get(httpMethod));
+        return methodDetail;
+    }
 
-        if (httpMethod == HttpMethod.POST) {
-            methodDetail.build(requestPath, URL_TO_POST_REQUEST_METHOD, POST_URL_MAP);
-            return methodDetail;
+    /**
+     * correspond url to method
+     */
+    private static void mapUrlToMethod(String url, Method method, HttpMethod httpMethod) {
+        String formattedUrl = formatUrl(url);
+        Map<String, Method> urlToMethodMap = REQUEST_METHOD_MAP.get(httpMethod);
+        Map<String, String> formattedUrlToUrlMap = REQUEST_URL_MAP.get(httpMethod);
+        if (urlToMethodMap.containsKey(formattedUrl)) {
+            throw new IllegalArgumentException(String.format("duplicate url: %s", url));
         }
-        return null;
+        urlToMethodMap.put(formattedUrl, method);
+        formattedUrlToUrlMap.put(formattedUrl, url);
+        REQUEST_METHOD_MAP.put(httpMethod, urlToMethodMap);
+        REQUEST_URL_MAP.put(httpMethod, formattedUrlToUrlMap);
     }
 
     /**

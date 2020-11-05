@@ -19,19 +19,6 @@ import java.util.Set;
  **/
 @Slf4j
 public class ReflectionUtil {
-    /**
-     * scan the classes marked by the specified annotation in the specified package
-     *
-     * @param packageName specified package name
-     * @param annotation  specified annotation
-     * @return the classes marked by the specified annotation in the specified package
-     */
-    public static Set<Class<?>> scanAnnotatedClass(String packageName, Class<? extends Annotation> annotation) {
-        Reflections reflections = new Reflections(packageName, new TypeAnnotationsScanner());
-        Set<Class<?>> annotatedClass = reflections.getTypesAnnotatedWith(annotation, true);
-        log.info("The number of class Annotated with @" + annotation.getSimpleName() + ":[{}]", annotatedClass.size());
-        return annotatedClass;
-    }
 
     /**
      * scan the classes marked by the specified annotation in the specified package
