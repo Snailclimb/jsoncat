@@ -18,7 +18,9 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public User get(@RequestParam("name") String name, @RequestParam("des") String des, @RequestParam("age") Integer age) {
+    public User get(@RequestParam(value = "name", require = true, defaultValue = "default name") String name,
+                    @RequestParam("des") String des,
+                    @RequestParam("age") Integer age) {
         return new User(name, des, age);
     }
 
