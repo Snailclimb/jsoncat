@@ -19,7 +19,11 @@ public class RequestParamParameterResolver implements ParameterResolver {
         String requestParameter = requestParam.value();
         String requestParameterValue = methodDetail.getQueryParameterMappings().get(requestParameter);
         if (requestParameterValue == null) {
-            throw new IllegalArgumentException("The specified parameter " + requestParameter + " can not be null!");
+            if (requestParam.require() && requestParam.defaultValue().isEmpty()) {
+                throw new IllegalArgumentException("The specified parameter " + requestParameter + " can not be null!");
+            } else {
+                requestParameterValue = requestParam.defaultValue();
+            }
         }
         // convert the parameter to the specified type
         return ObjectUtil.convert(parameter.getType(), requestParameterValue);

@@ -40,7 +40,20 @@ class UserControllerTest {
         when().get("/user?name=yasuo&des=哈撒尅").
                 then().
                 statusCode(500);
+    }
 
+    @Test
+    void get_user_with_default_value() {
+        when().get("/user?des=哈撒尅&age=18")
+                .then()
+                .statusCode(200)
+                .body("name", equalTo("default name"),
+                        "des", equalTo("哈撒尅"),
+                        "age", equalTo(18));
+
+        when().get("/user?name=yasuo&des=哈撒尅")
+                .then()
+                .statusCode(500);
     }
 
     //test @RequestBody
